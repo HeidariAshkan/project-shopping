@@ -1,4 +1,5 @@
 import React from 'react'
+import { Button } from '@mui/material';
 
 function AmazingOffer() {
   return (
@@ -9,20 +10,20 @@ function AmazingOffer() {
                     پشنهاد شگفت انگیز 
                 </h1>
             </div>
-            <div className='flex gap-4'>
-                <div className='relative rounded-full bg-[#fefefe] w-24 h-24 cursor-pointer'>
+            <div className='flex gap-4 items-center'>
+                <div className='relative rounded-full bg-[#fefefe] w-20 h-20 cursor-pointer'>
                     <p className='absolute bottom-1 right-1 bg-[#EF4056] text-white px-2 rounded-3xl'>
                         25%
                     </p>
                 </div>
-                <div className='relative rounded-full bg-[#fefefe] w-24 h-24 cursor-pointer'>
+                <div className='relative rounded-full bg-[#fefefe] w-20 h-20 cursor-pointer'>
                     <p className='absolute bottom-1 right-1 bg-[#EF4056] text-white px-2 rounded-3xl'>
                         25%
                     </p>
                 </div>
             </div>
             <div>
-                <button className='bg-[#fefefe] px-5 py-2 rounded-3xl text-[#0000FF] hover:text-[#fefefe] hover:bg-[#0000FF] transition-all duration-500'>بیش تر ...</button>
+                <Button variant='outlined' className='bg-[#fefefe] rounded-3xl border-[#0000FF] text-[#0000FF] hover:text-[#fefefe] hover:bg-[#0000FF] transition-all duration-500'>بیش تر...</Button>
             </div>
         </div>
     </>

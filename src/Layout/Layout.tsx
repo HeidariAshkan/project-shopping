@@ -10,9 +10,11 @@ interface IProps {
 function Layout({children}: IProps) {
   return (
     <>
-      <Header/>
-        {children}
-      <Footer/>
+    <div>
+        <Header/>
+          {children}
+        <Footer/>
+    </div>
     </>
   )
 }
