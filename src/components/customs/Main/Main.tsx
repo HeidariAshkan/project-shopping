@@ -5,6 +5,8 @@ import AmazingOffer from './../AmazingOffer/AmazingOffer';
 import { getCategory } from './../../../redux/slice/categorySlice';
 import { getProduct } from './../../../redux/slice/productSlice';
 import ProductCategories from './../ProductCategories/ProductCategories';
+import BestBuy from '../BestBuy/BestBuy';
+
 interface categoryState {
   category : [],
   status : "idle"|"pending"|"succeeded"|"failed"
@@ -48,6 +50,7 @@ function Main() {
         <SummaryOfProduct key={item.id} category={item} product={product}/>
       ))}
       <ProductCategories category={category}/>
+      <BestBuy product={product} />
     </div>
   )
 }
