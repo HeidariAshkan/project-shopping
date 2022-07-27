@@ -4,13 +4,16 @@ import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import TelegramIcon from '@mui/icons-material/Telegram';
 import TwitterIcon from '@mui/icons-material/Twitter';
 import { Button } from '@mui/material';
+import  Link  from 'next/link';
 
 function Footer() {
   return (
     <div>
         <div className='flex flex-col items-center gap-5'>
             <h1 className='text-2xl font-semibold'>همین حالا عضو ما بشو!</h1>
-            <Button variant="contained" className='text-xl bg-[#5500FF] text-[#fefefe] w-[158px] h-[55.17px] rounded-md hover:bg-[#fefefe] hover:text-[#5500FF] transition-all duration-500'>شروع کن</Button>
+            <Link href="/signup">
+                <Button variant="contained" className='text-xl bg-[#5500FF] text-[#fefefe] w-[158px] h-[55.17px] rounded-md hover:bg-[#fefefe] hover:text-[#5500FF] transition-all duration-500'>شروع کن</Button>
+            </Link>
         </div>
         <hr className='my-10 rotate-3 bg-[#5500ff75] h-[2px] sol' />
         <div className='flex justify-around'>

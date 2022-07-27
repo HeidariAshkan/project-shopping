@@ -4,6 +4,7 @@ import SummaryOfProduct from '../SummaryOfProduct/SummaryOfProduct';
 import AmazingOffer from './../AmazingOffer/AmazingOffer';
 import { getCategory } from './../../../redux/slice/categorySlice';
 import { getProduct } from './../../../redux/slice/productSlice';
+import ProductCategories from './../ProductCategories/ProductCategories';
 interface categoryState {
   category : [],
   status : "idle"|"pending"|"succeeded"|"failed"
@@ -33,7 +34,7 @@ function Main() {
 
   useEffect(() => {
     dispatch(getProduct())
-  },[category])
+  },[])
 
   
 
@@ -41,11 +42,12 @@ function Main() {
 
   // const res = fetch("http://localhost:8000/store/category").then(res => res.json().then(data => console.log(data)));
   return (
-    <div className='flex flex-col items-center mt-8'>
+    <div className='flex flex-col items-center mt-10 my-8 gap-14'>
       <AmazingOffer product={product}/>
       {category.category.filter((item:IItem) => item.parent === null ).map((item:IItem) =>(
         <SummaryOfProduct key={item.id} category={item} product={product}/>
       ))}
+      <ProductCategories category={category}/>
     </div>
   )
 }
