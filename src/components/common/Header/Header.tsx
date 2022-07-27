@@ -13,7 +13,7 @@ function Header() {
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
     const [openModal, setOpenModal] = useState<boolean>(false)
-    console.log(openMenu);
+    // console.log(openMenu);
 
     const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
         setAnchorEl(e.currentTarget);

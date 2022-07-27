@@ -7,7 +7,7 @@ import Main from './../src/components/customs/Main/Main';
 
 const Home: NextPage = ({data}:any) => {
 
-  console.log(data)
+  // console.log(data)
 
   return (
     <div dir='rtl' className='relarive'>
