@@ -1,7 +1,7 @@
 import React from "react";
 import { useState } from "react";
-import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
 import ModalLogin from './../src/components/customs/ModalLogin/ModalLogin';
+import { Button } from '@mantine/core';
 
 
 function SignUp() {
@@ -22,7 +22,7 @@ function SignUp() {
           <input
             name="email"
             type="text"
-            className={`outline-none w-full bg-transparent text-sm transition-all duration-200 ease-in-out p-2 ${
+            className={`outline-none w-full bg-transparent text-sm transition-all duration-200 ease-in-out p-2  focus:ring-0 border-none${
               activeEmail ? "pt-6" : ""
             }`}
             onChange={(e: any) => {
@@ -45,7 +45,7 @@ function SignUp() {
           <input
             name="phoneNumber"
             type="text"
-            className={`outline-none w-full bg-transparent text-sm transition-all duration-200 ease-in-out p-2 ${
+            className={`outline-none w-full bg-transparent text-sm transition-all duration-200 ease-in-out p-2  focus:ring-0 border-none${
               activePhoneNumber ? "pt-6" : ""
             }`}
             onChange={(e: any) => {
@@ -68,7 +68,7 @@ function SignUp() {
           <input
             name="password"
             type="password"
-            className={`outline-none w-full bg-transparent text-sm transition-all duration-200 ease-in-out p-2 ${
+            className={`outline-none w-full bg-transparent text-sm transition-all duration-200 ease-in-out p-2  focus:ring-0 border-none${
               activePassword ? "pt-6" : ""
             }`}
             onChange={(e: any) => {
@@ -91,7 +91,7 @@ function SignUp() {
           <input
             name="passwordRepeat"
             type="password"
-            className={`outline-none w-full bg-transparent text-sm transition-all duration-200 ease-in-out p-2 ${
+            className={`outline-none w-full bg-transparent text-sm transition-all duration-200 ease-in-out p-2  focus:ring-0 border-none${
               activeConfirmPassword ? "pt-6" : ""
             }`}
             onChange={(e: any) => {
@@ -108,14 +108,14 @@ function SignUp() {
           </label>
         </div>
         <div className="w-2/3">
-          <button className="text-[#fefefe] bg-[#5500FF] hover:bg-opacity-80 transition-all duration-500 w-full py-2 rounded-3xl">
+          <Button className="text-[#fefefe] bg-[#5500FF] hover:bg-[#5500FF] hover:bg-opacity-80 transition-all duration-500 w-full py-2 rounded-3xl">
             ثبت نام
-          </button>
+          </Button>
         </div>
         <div className="w-2/3">
-          <button onClick={(e)=>{e.preventDefault();setOpenModal(true);}} className="text-[#5500FF] bg-[#fefefe] hover:text-opacity-80 transition-all duration-500 w-full py-2 rounded-3xl">
+          <Button variant="subtle" onClick={()=>{setOpenModal(true);}} className="text-[#5500FF] bg-[#fefefe] hover:text-opacity-80 transition-all duration-500 w-full py-2 rounded-3xl">
             ورود
-          </button>
+          </Button>
         </div>
       </form>
       <div className="w-2/4 flex flex-col gap-4 bg-[#0000FF] bg-opacity-[55%] text-white p-6 justify-center">

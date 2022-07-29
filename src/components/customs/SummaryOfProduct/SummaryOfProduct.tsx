@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo } from 'react'
 import Image from 'next/image'
-import { Button } from '@mui/material';
 import { useSelector , useDispatch } from 'react-redux';
+import { Button } from '@mantine/core';
 
 
 interface IProps {
@@ -51,7 +51,7 @@ function SummaryOfProduct({ category , product }:IProps) {
                         <img className='w-full rounded-md h-[160px]' alt="pic" src={item.main_image}/>
                         <div className="w-[160px] flex flex-col items-center gap-2" dir="rtl">
                             <p className="">{item.final_price} تومان</p>
-                            <Button variant="contained" className='bg-[#5500FF] text-white px-6 py-1 hover:text-[#5500FF] hover:bg-[#fefefe] transiton-all duration-500 rounded-md'>خرید</Button>
+                            <Button variant="filled" className='bg-[#5500FF] text-white px-6 py-1 hover:text-[#5500FF] hover:bg-[#fefefe] transiton-all duration-500 rounded-md'>خرید</Button>
                         </div>
                     </div>
                     ))

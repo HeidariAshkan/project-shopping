@@ -1,10 +1,10 @@
 import React from 'react'
-import InstagramIcon from '@mui/icons-material/Instagram';
-import LinkedInIcon from '@mui/icons-material/LinkedIn';
-import TelegramIcon from '@mui/icons-material/Telegram';
-import TwitterIcon from '@mui/icons-material/Twitter';
-import { Button } from '@mui/material';
 import  Link  from 'next/link';
+import { AiFillTwitterCircle } from "react-icons/ai";
+import { BsTelegram , BsLinkedin } from "react-icons/bs";
+import { RiInstagramFill } from "react-icons/ri";
+import { Button } from '@mantine/core';
+
 
 function Footer() {
   return (
@@ -12,7 +12,7 @@ function Footer() {
         <div className='flex flex-col items-center gap-5'>
             <h1 className='text-2xl font-semibold'>همین حالا عضو ما بشو!</h1>
             <Link href="/signup">
-                <Button variant="contained" className='text-xl bg-[#5500FF] text-[#fefefe] w-[158px] h-[55.17px] rounded-md hover:bg-[#fefefe] hover:text-[#5500FF] transition-all duration-500'>شروع کن</Button>
+                <Button variant="filled" className='text-xl bg-[#5500FF] text-[#fefefe] w-[158px] h-[55.17px] rounded-md hover:bg-[#fefefe] hover:text-[#5500FF] transition-all duration-500'>شروع کن</Button>
             </Link>
         </div>
         <hr className='my-10 rotate-3 bg-[#5500ff75] h-[2px] sol' />
@@ -46,10 +46,10 @@ function Footer() {
                         <h5>شماره پشتیبانی: 09129545765</h5>
                         <h5>ما را در شبکه های اجتماعی دنبال کنید</h5>
                         <div className='flex gap-5'>
-                            <InstagramIcon className='bg-black text-white rounded-lg p-1 cursor-pointer hover:bg-[#5500FF] transition-all duration-500'/>
-                            <LinkedInIcon  className='bg-black text-white rounded-lg p-1 cursor-pointer hover:bg-[#5500FF] transition-all duration-500'/>
-                            <TelegramIcon  className='bg-black text-white rounded-lg p-1 cursor-pointer hover:bg-[#5500FF] transition-all duration-500'/>
-                            <TwitterIcon className='bg-black text-white rounded-lg p-1 cursor-pointer hover:bg-[#5500FF] transition-all duration-500'/>
+                            <RiInstagramFill className='bg-black text-white rounded-lg p-1 cursor-pointer hover:bg-[#5500FF] transition-all duration-500'/>
+                            <BsLinkedin  className='bg-black text-white rounded-lg p-1 cursor-pointer hover:bg-[#5500FF] transition-all duration-500'/>
+                            <BsTelegram  className='bg-black text-white rounded-lg p-1 cursor-pointer hover:bg-[#5500FF] transition-all duration-500'/>
+                            <AiFillTwitterCircle className='bg-black text-white rounded-lg p-1 cursor-pointer hover:bg-[#5500FF] transition-all duration-500'/>
                         </div>
                     </div>
                 </div>

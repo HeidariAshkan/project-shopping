@@ -1,9 +1,11 @@
 import React,{ useMemo } from 'react'
+import Link  from 'next/link';
+
 
 interface IProps{
     category:{
         category:[],
-        staus:"idle"|"pending"|"succeeded"|"failed"
+        status:"idle"|"pending"|"succeeded"|"failed"
     }
 }
 
@@ -22,7 +24,9 @@ function ProductCategories({category}:IProps) {
                 {
                     childCategory.map((item:any)=>(
                         <div key={item.id} className="bg-cover bg-[#fefefe] cursor-pointer rounded-md ">
+                        <Link href={`products/?categroys=${item.name}`}>
                             <img className='w-full rounded-md' src={item.image} alt="pic" />
+                        </Link>
                         </div>
                     ))
                 }

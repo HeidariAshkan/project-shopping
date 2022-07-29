@@ -6,11 +6,8 @@ import { getCategory } from './../../../redux/slice/categorySlice';
 import { getProduct } from './../../../redux/slice/productSlice';
 import ProductCategories from './../ProductCategories/ProductCategories';
 import BestBuy from '../BestBuy/BestBuy';
+import { RootState } from '../../../redux/store/store';
 
-interface categoryState {
-  category : [],
-  status : "idle"|"pending"|"succeeded"|"failed"
-}
 
 interface IItem {
       id:number,
@@ -26,8 +23,8 @@ interface IItem {
 function Main() {
   
   
-  const category = useSelector((state:any) => state.categorySlice);
-  const product = useSelector((state:any) => state.productSlice);
+  const category = useSelector((state:RootState) => state.categorySlice);
+  const product = useSelector((state:RootState) => state.productSlice);
   const dispatch = useDispatch();
   // dispatch(getCategory())
   useEffect(() => {
