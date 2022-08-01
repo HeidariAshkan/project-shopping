@@ -1,13 +1,46 @@
+import { useEffect , useRef } from 'react';
 import type { NextPage } from 'next'
 import Head from 'next/head'
-import Image from 'next/image'
 import Layout from '../src/Layout/Layout'
-import styles from '../styles/Home.module.css'
-import Main from './../src/components/customs/Main/Main';
+import AmazingOffer from './../src/components/customs/AmazingOffer/AmazingOffer';
+import SummaryOfProduct from './../src/components/customs/SummaryOfProduct/SummaryOfProduct';
+import ProductCategories from './../src/components/customs/ProductCategories/ProductCategories';
+import CardBestBuy from '../src/components/customs/CardBestBuy/CardBestBuy';
+import { Carousel } from '@mantine/carousel';
+import { RootState } from '../src/redux/store/store'
+import { getProduct } from './../src/redux/slice/productSlice';
+import { useSelector, useDispatch } from 'react-redux';
+import { getCategory } from './../src/redux/slice/categorySlice';
+import Autoplay from 'embla-carousel-autoplay';
+
+interface IItem {
+  id:number,
+  parent:null | [],
+  children:[],
+  name:string,
+  slug:null,
+  featured:boolean,
+  icon:null|string
+}
+
 
 const Home: NextPage = ({data}:any) => {
 
-  // console.log(data)
+
+const category = useSelector((state:RootState) => state.categorySlice);
+const product = useSelector((state:RootState) => state.productSlice);
+
+const autoPlay = useRef(Autoplay({ delay: 3000 }))
+
+const dispatch = useDispatch();
+// dispatch(getCategory())
+useEffect(() => {
+  dispatch(getCategory())
+},[])
+
+useEffect(() => {
+  dispatch(getProduct())
+},[])
 
   return (
     <div dir='rtl' className='relarive'>
@@ -17,7 +50,49 @@ const Home: NextPage = ({data}:any) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Layout>
-        <Main/>
+      <div className='flex flex-col items-center mt-10 my-8 gap-14'>
+          <div dir="ltr" className="w-full">
+            <Carousel
+            sx={{ width: "100%" ,}}
+            mx="auto"
+            withIndicators
+            height={300}
+            styles={{
+              indicator: {
+                width: 12,
+                height: 4,
+                transition: 'width 250ms ease',
+                backgroundColor:"#fefefe !important",
+                color:'#fefefe',
+
+                '&[data-active]': {
+                  width: 40,
+                  backgroundColor: '#fefefe',
+                },
+              },
+            }}
+            plugins={[autoPlay.current]}
+            onMouseEnter={autoPlay.current.stop}
+            onMouseLeave={autoPlay.current.reset}
+          >
+            <Carousel.Slide sx={{backgroundImage:'url("https://dkstatics-public.digikala.com/digikala-adservice-banners/307ee8ee727a95d7cf5347cde4920856ed0d9f88_1658825874.jpg?x-oss-process=image/quality,q_95")' , backgroundSize:"cover" }}></Carousel.Slide>
+            <Carousel.Slide  sx={{backgroundImage:'url("https://dkstatics-public.digikala.com/digikala-adservice-banners/c3a00b5ce22f2c85438cdc8db8d3743810b3ed6c_1658574738.jpg?x-oss-process=image/quality,q_95")' , backgroundSize:"cover"}}></Carousel.Slide>
+            <Carousel.Slide sx={{backgroundImage:'url("https://dkstatics-public.digikala.com/digikala-adservice-banners/b5e501216f7d50205a01b89c3d12370a3c20c114_1658557717.jpg?x-oss-process=image/quality,q_95")' , backgroundSize:"cover"}}></Carousel.Slide>
+            {/* ...other slides */}
+          </Carousel>
+          </div>
+          <AmazingOffer product={product}/>
+          {category.category.filter((item:IItem) => item.parent === null ).map((item:IItem) =>(
+            <SummaryOfProduct key={item.id} category={item} product={product}/>
+          ))}
+          <ProductCategories category={category}/>
+          <div className='flex flex-col gap-6 p-2 border rounded-xl w-[95%] items-center mb-16 pb-6'>
+            <h1 className='text-center text-2xl font-semibold flex flex-row-reverse'>منتخب محصولات تخفیف و حراج <img className='w-8' src="https://img.icons8.com/color/48/000000/discount--v1.png"/></h1>
+            <div className="grid grid-cols-1 2xl:grid-cols-7 lg:grid-cols-5 content-center items-center md:grid-cols-4 sm:grid-cols-3 gap-4">
+              <CardBestBuy product={product} />
+            </div>
+          </div>
+        </div>
       </Layout>
     </div>
   )
@@ -26,14 +101,3 @@ const Home: NextPage = ({data}:any) => {
 export default Home
 
 
-export async function  getStaticProps() {
-
-  const res = await fetch('http://localhost:8000/store/product')
-  const data = await res.json()
-
-  return { 
-    props: {
-      data,
-    } 
-  }
-}

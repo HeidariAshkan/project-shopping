@@ -2,6 +2,7 @@ import React from 'react'
 import Link  from 'next/link';
 import { Menu , ActionIcon } from '@mantine/core';
 import { FiMenu } from 'react-icons/fi'
+import { RiSendPlane2Fill } from 'react-icons/ri';
 
 
 // interface IProps {
@@ -22,11 +23,11 @@ function MenuBar() {
     </Menu.Target>
     <Menu.Dropdown className={`border border-[#5500FF] flex flex-col items-center justify-center`}>
         <Link href="/">
-            <Menu.Item><button className='w-full border-b border-[#5500FF] py-2 px-4 hover:bg-[#5500FF] hover:text-[#fefefe] text-[#5500FF] rounded-lg'>خانه</button></Menu.Item>
+            <Menu.Item><div className='w-full border-b border-[#5500FF] py-2 px-4 hover:bg-[#5500FF] hover:text-[#fefefe] text-[#5500FF] rounded-lg text-center'>خانه</div></Menu.Item>
         </Link>
-            <Menu.Item><button className='w-full border-b border-[#5500FF] py-2 px-4 hover:bg-[#5500FF] hover:text-[#fefefe] text-[#5500FF] rounded-lg'>درباره ما</button></Menu.Item>
+            <Menu.Item><div className='w-full border-b border-[#5500FF] py-2 px-4 hover:bg-[#5500FF] hover:text-[#fefefe] text-[#5500FF] rounded-lg text-center'>درباره ما</div></Menu.Item>
         <Link href="/products">
-            <Menu.Item><button className='w-full border-b border-[#5500FF] py-2 px-4 hover:bg-[#5500FF] hover:text-[#fefefe] text-[#5500FF] rounded-lg'>محصولات</button></Menu.Item>
+            <Menu.Item><div className='w-full border-b border-[#5500FF] py-2 px-4 hover:bg-[#5500FF] hover:text-[#fefefe] text-[#5500FF] rounded-lg text-center'>محصولات</div></Menu.Item>
         </Link> 
     </Menu.Dropdown>
   </Menu>

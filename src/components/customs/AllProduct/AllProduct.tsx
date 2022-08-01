@@ -1,15 +1,13 @@
-import React , { useState , useEffect , useMemo } from "react";
+import React , { useState , useEffect , useMemo, useLayoutEffect } from "react";
 import { BsFilterRight } from "react-icons/bs";
 import { BsStarFill } from "react-icons/bs";
 import { GrAdd } from "react-icons/gr";
-import { Button, Select , Menu , RangeSlider , Switch , ActionIcon , Pagination  } from '@mantine/core';
+import { Button, Select , Menu , RangeSlider , Switch , Pagination  } from '@mantine/core';
 import { AiFillCaretDown } from 'react-icons/ai';
 import { RootState } from '../../../redux/store/store';
 import { useSelector , useDispatch } from "react-redux";
 import { getProduct } from './../../../redux/slice/productSlice';
 import { getCategory } from './../../../redux/slice/categorySlice';
-import { IoIosArrowDropleftCircle } from 'react-icons/io'
-import { IoIosArrowDroprightCircle } from 'react-icons/io'
 import { useRouter } from "next/router";
 
 
@@ -22,97 +20,122 @@ function AllProduct() {
     const product = useSelector((store:RootState) => store.productSlice);
     const category = useSelector((store:RootState) => store.categorySlice);
 
+    // pages
     const [startRecord , setStartRecord] = useState<number>(0)
     const [endRecord , setEndRecord] = useState<number>(12)
     const [page , setPage] = useState<number>(1)
     const [totalPage , setTotalPage] = useState<number>(1)
-    const [rangeFilter , setRangeFilter] = useState<[number, number]>([90000 , 300000000])
+
+
+
+    // filters
+    const [rangeFilter , setRangeFilter] = useState<[number, number]>([90000 , 180000000])
+
     const [exsitProduct , setExistProduct] = useState<boolean>(false)
+
     const [discountProduct , setDiscountProduct] = useState<boolean>(false)
 
     const [filterProduct , setFilterProduct] = useState<any>([])
 
-    const [filterByCat , setFilterByCat ] = useState<string | null>("")
+    const [filterGrouping , setFilterGrouping ] = useState<string | null>("")
 
     const [sortProduct , setSortProduct] = useState<string | null>('')
 
-    const router = useRouter()
-    const { categroys }:any = router.query
-
-
-
-    useEffect(()=>{
-      setFilterByCat(categroys)
-    },[categroys])
-
-    // setTotalPage(Math.ceil(filterProduct.length / 12));
-    // setStartRecord((page - 1) * 12);
-    // setStartRecord(page * 12);
-
+    const [categoryParam , setCategoryParam] = useState<string | string[] | undefined >('')
 
     
-    // console.log(filterByCat)
-
+    
+    
+    
+    
+    
+    const router = useRouter()
+    const { categorys } = router.query
     const dispatch = useDispatch()
-
+    
     useEffect(()=>{
         dispatch(getProduct())
         dispatch(getCategory())
         setSortProduct('Default')
+        setCategoryParam(router.query.categorys)
     },[])
 
-
     const filterCategory = useMemo(()=>{
-      return category?.category?.filter((item:any)=> item.children === null)
-    },[category])
-
-
-    
-   useEffect(()=>{
-
-     const id:any = filterCategory?.find((item:any)=> item.name === filterByCat)?.id
-      if(filterByCat){
-        console.log(id)
-        const productFiltred:any = product.product?.filter((item:any)=> item.category === id)
-        setFilterProduct(productFiltred)
+      if(categoryParam === 'الکترونیکی'){
+        return category.category.filter((item:any)=> item.id === 8 || item.id === 2 || item.id === 3)
       }
-      if(!filterByCat){
-        setFilterProduct(product.product)
+      else if(categoryParam === 'مد و پوشاک'){
+        return category.category.filter((item:any)=> item.id === 5 || item.id === 6 || item.id === 7)
       }
-    
-      if(rangeFilter[0] !== 90000 || rangeFilter[1] !== 300000000){
+      else{
+        return [];
+      }
+    },[categoryParam , category])
+
+
+    // filter Podduct ManageMent !!
+    useEffect(()=>{
+      let id:number = filterCategory?.find((item:any)=> item.name === filterGrouping)?.id
+      if(id){
+            const productFiltred:any = product.product?.filter((item:any)=> item.category === id)
+            setFilterProduct(productFiltred)
+      }
+      if(!id){
+        if(categoryParam === "الکترونیکی"){
+          setFilterProduct(product.product?.filter((item:any)=> item.category === 8 || item.category === 2 || item.category === 3 ))
+        }
+        if(categoryParam === "مد و پوشاک"){
+          setFilterProduct(product.product?.filter((item:any)=> item.category === 5 || item.category === 6 || item.category === 7 ))
+        }
+      }
+      if(rangeFilter[0] !== 90000 || rangeFilter[1] !== 180000000){
         if(id){
-          const productFiltred:any = product.product?.filter((item:any)=> item.category === id)
-          setFilterProduct(productFiltred.filter((item:any)=> item.final_price >= rangeFilter[0] && item.final_price <= rangeFilter[1]))
+          setFilterProduct(filterProduct.filter((item:any)=> item.final_price >= rangeFilter[0] && item.final_price <= rangeFilter[1]))
         }
         else{
-          setFilterProduct(product.product.filter((item:any)=> item.final_price >= rangeFilter[0] && item.final_price <= rangeFilter[1]))
+          if(categoryParam === 'الکترونیکی'){
+            const productFiltred:any = product.product?.filter((item:any)=> item.category === 8 || item.category === 2 || item.category === 3 )
+            setFilterProduct(productFiltred.filter((item:any)=> item.final_price >= rangeFilter[0] && item.final_price <= rangeFilter[1]))
+          }
+          if(categoryParam === "مد و پوشاک"){
+            const productFiltred:any = product.product?.filter((item:any)=> item.category === 5 || item.category === 6 || item.category === 7 )
+            setFilterProduct(productFiltred.filter((item:any)=> item.final_price >= rangeFilter[0] && item.final_price <= rangeFilter[1]))
+          }
         }
       }
-
-      if(exsitProduct){
-        if(id){
-          const productFiltred:any = product.product?.filter((item:any)=> item.category === id)
-          setFilterProduct(productFiltred.filter((item:any)=> item.remaining > 0))
-        }
-        else{
-          setFilterProduct(product.product.filter((item:any)=> item.remaining > 0))
-        }
-      }
-
       if(discountProduct){
         if(id){
-          const productFiltred:any = product.product?.filter((item:any)=> item.category === id)
-          setFilterProduct(productFiltred.filter((item:any)=> item.featured === true))
+          setFilterProduct(filterProduct.filter((item:any)=> item.featured === true))
         }
         else{
-          setFilterProduct(product.product.filter((item:any)=> item.featured === true))
+          if(categoryParam === 'الکترونیکی'){
+            const productFiltred:any = product.product?.filter((item:any)=> item.category === 8 || item.category === 2 || item.category === 3 )
+            setFilterProduct(productFiltred.filter((item:any)=>item.featured === true))
+          }
+          if(categoryParam === "مد و پوشاک"){
+            const productFiltred:any = product.product?.filter((item:any)=> item.category === 5 || item.category === 6 || item.category === 7 )
+            setFilterProduct(productFiltred.filter((item:any)=>item.featured === true))
+          }
         }
       }
+      if(exsitProduct){
+        if(id){
+          setFilterProduct(filterProduct.filter((item:any)=> item.remaining > 0))
+        }
+        else{
+          if(categoryParam === 'الکترونیکی'){
+            const productFiltred:any = product.product?.filter((item:any)=> item.category === 8 || item.category === 2 || item.category === 3 )
+            setFilterProduct(productFiltred.filter((item:any)=>item.remaining > 0))
+          }
+          if(categoryParam === "مد و پوشاک"){
+            const productFiltred:any = product.product?.filter((item:any)=> item.category === 5 || item.category === 6 || item.category === 7 )
+            setFilterProduct(productFiltred.filter((item:any)=>item.remaining > 0))
+          }
+        }
+      }
+    },[filterGrouping , product , rangeFilter , exsitProduct , discountProduct , categoryParam])
 
-
-    },[filterByCat , product , rangeFilter , exsitProduct , discountProduct])
-
+    // sorting Products
     useEffect(()=>{
       switch(sortProduct){
         case 'Default':
@@ -128,34 +151,35 @@ function AllProduct() {
       }
     },[sortProduct])
 
-    // console.log(startRecord , endRecord)
+    // turn off Filtering Discount and Exist after change ID
     useEffect(()=>{
-      // page , next page , totalPage , ...
-      setTotalPage(Math.ceil(product.product.length / 12));
+      setExistProduct(false)
+      setDiscountProduct(false)
+      setRangeFilter([90000 , 180000000])
+    },[filterGrouping])
+
+    // Page Maker
+    useEffect(()=>{
+      setTotalPage(Math.ceil(filterProduct.length / 12));
       setStartRecord((page - 1) * 12);
       setEndRecord(page * 12);
     },[page , filterProduct])
 
- 
-    
-    // console.log(product)
-    // console.log(filterByCat)
-    // console.log(filterCategory)
     
   return (
     <div className="flex items-center gap-3 my-10">
       <div className="flex flex-col gap-4 p-4 border border-[#5500FF] rounded-xl sticky top-3 self-start mt-16">
          <h1 className="text-2xl">فیلترها</h1>
          <div className="flex flex-col gap-5">
-            <Select className="border-[#5500FF]" rightSection={<AiFillCaretDown/>} allowDeselect data={filterCategory?.map((item:any)=> item.name)} placeholder="دسته بندی" value={filterByCat} onChange={setFilterByCat}/> 
+            <Select className="border-[#5500FF]" rightSection={<AiFillCaretDown/>} allowDeselect data={filterCategory?.map((item:any)=> item.name)} placeholder="دسته بندی" value={filterGrouping} onChange={setFilterGrouping}/> 
             <Select rightSection={<AiFillCaretDown/>} allowDeselect data={["react" ,"tsx"]} placeholder="برند" />
             
             <Menu width={200} shadow="md">
                 <Menu.Target>
-                  <button className="px-4 py-1 border text-[#5500FF] rounded-md">محدوده قیمت</button>
+                  <button className="px-4 py-1 border text-[#5500FF] rounded-md hover:bg-gray-100 transition-all duration-500">محدوده قیمت</button>
                 </Menu.Target>
                 <Menu.Dropdown>
-                  <Menu.Item><RangeSlider min={90000} max={300000000}  size="xs" value={rangeFilter} defaultValue={[90000 , 300000000]} onChange={setRangeFilter}/></Menu.Item>
+                  <Menu.Item><RangeSlider min={90000} max={180000000}  size="xs" value={rangeFilter} defaultValue={[90000 , 180000000]} onChange={setRangeFilter}/></Menu.Item>
                 </Menu.Dropdown>
             </Menu>
             <div dir="ltr">
@@ -168,7 +192,7 @@ function AllProduct() {
       </div>
       <div className="flex flex-col w-[90%]">
         <div className="flex flex-row-reverse justify-around p-4">
-          <p>{product.product.length} کالا</p>
+          <p>{filterProduct.length} کالا</p>
           <div className="flex gap-5 items-center">
             <div className="flex flex-row-reverse items-center">
               <p className="text-lg font-semibold">مرتب سازی:</p>
@@ -183,7 +207,7 @@ function AllProduct() {
         <div className="grid grid-cols-3 gap-4">
           {
             filterProduct?.slice(startRecord,endRecord).map((item:any) => (
-            <div key={item.id} className="border rounded-lg p-2 flex flex-col justify-between">
+            <div key={item.id} className="border rounded-lg p-2 flex flex-col justify-between hover: hover:shadow-2xl cursor-pointer">
                 <img className="w-full" src={item.main_image} alt="pic" />
                 <div>
                     <h4 className="w-full truncate">{item.description}</h4>
@@ -194,15 +218,15 @@ function AllProduct() {
                                 3.9
                             </div>
                             <p className="text-sm ">
-                                {parseInt(item.final_price).toFixed()} تومان
+                                {parseInt(item.final_price).toLocaleString("fa-IR")} تومان
                             </p>
-                            {(item.featured) ? <p className="text-xs text-gray-500 mx-auto line-through">{parseInt(item.price).toFixed()}</p> : ""}
+                            {(item.featured) ? <p className="text-xs text-gray-500 mx-auto line-through">{parseInt(item.price).toLocaleString("fa-IR")}</p> : ""}
                         </div>
                         <div className="flex items-center">
                             <Button size="md" variant="filled" className="text-[#5500FF] border-[#5500FF] hover:border-[#5500FF] hover:bg-[#5500FF] hover:bg-opacity-10"><GrAdd/></Button >
                         </div>
                         <div className="flex flex-col gap-4 justify-center">
-                          {(item.remaining > 5) ? <p className="text-green-600">موجود در انبار</p> : (item.remaining > 0) ? <p className="text-red-600">فقط در {item.remaining}انبار</p> : <p className="text-gray-400">ناموجود</p> }
+                          {(item.remaining > 5) ? <p className="text-green-600">موجود در انبار</p> : (item.remaining > 0) ? <p className="text-red-600 text-xs w-20">فقط {item.remaining} عدد موجود است</p> : <p className="text-gray-400">ناموجود</p> }
                           {(item.featured) ? <p className="bg-[#EF4056] text-white text-center px-2 rounded-3xl hover:text-[#EF4056] hover:bg-white transition-all duration-500 hover:shadow-md">{100 - +(item.final_price * 100 / item.price ).toFixed()}%</p> : ""}
                         </div>
                     </div>
@@ -212,12 +236,6 @@ function AllProduct() {
           }
         </div>
         <div dir="ltr" className="flex justify-center">
-          {/* <ActionIcon className="text-4xl">
-            <IoIosArrowDroprightCircle/>  
-          </ActionIcon>
-          <ActionIcon className="text-4xl">
-            <IoIosArrowDropleftCircle/>
-          </ActionIcon> */}
           <Pagination total={totalPage} page={page} onChange={setPage}/>
         </div> 
       </div>
@@ -229,26 +247,3 @@ export default AllProduct;
 
 
 
-{/* <div className="border rounded-lg p-2">
-<img className="w-full" src="https://dkstatics-public.digikala.com/digikala-products/48c5a02abc05ec142e3906ff4e2c78479bb8a966_1615037236.jpg?x-oss-process=image/resize,m_lfit,h_800,w_800/quality,q_90" alt="pic" />
-<div>
-    <h4>کارت هدیه دیجی کالا به ارزش 100.000 تومان طرح روز معلم</h4>
-    <div className="flex flex-row-reverse justify-between p-2">
-        <div className="flex flex-col gap-4">
-            <div className="flex flex-row-reverse items-center justify-between">
-                <BsStarFill className="text-yellow-500"/>
-                3.9
-            </div>
-            <p className="text-sm">
-                225000 تومان
-            </p>
-        </div>
-        <div className="flex items-center">
-            <Button size="md" variant="filled" className="text-[#5500FF] border-[#5500FF] hover:border-[#5500FF] hover:bg-[#5500FF] hover:bg-opacity-10"><GrAdd/></Button >
-        </div>
-        <div className="flex flex-col gap-4">
-            <p>موجود در انبار</p>
-            <p className="bg-[#EF4056] text-white text-center px-2 rounded-3xl hover:text-[#EF4056] hover:bg-white transition-all duration-500 hover:shadow-md">25%</p>
-        </div>
-    </div>
-</div> */}

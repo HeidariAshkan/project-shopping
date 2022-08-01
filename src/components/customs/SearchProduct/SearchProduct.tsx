@@ -18,9 +18,9 @@ function SearchProduct({text , open , close}:IProps) {
     },[text])
 
   return (
-    <div className={`absolute top-7 flex flex-col gap-2 bg-[#fefefe] p-4 rounded-lg border ${(open) ? "block" : "hidden"}`}>
+    <div className={`absolute top-7 flex flex-col gap-2 bg-[#fefefe] p-4 rounded-lg border w-full ${(open) ? "block" : "hidden"}`}>
         {(itemProduct.length > 0) ? itemProduct.slice(0,4).map((item:any) => (
-            <div className="flex flex-row-reverse justify-between items-center border border-[#5500FF] rounded-xl p-4">
+            <div key={item.id} className="flex flex-row-reverse justify-between items-center border border-[#5500FF] rounded-xl p-4">
                 <img className="w-20" src={item.main_image} alt="pic" />
                  <p>{item.name}</p>
             </div>

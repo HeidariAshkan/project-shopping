@@ -33,7 +33,7 @@ function Header() {
     },[input])
 
   return (
-    <div className='flex flex-row-reverse justify-between items-center sticky z-50'>
+    <div className='flex flex-row-reverse justify-between items-center p-4 sticky z-50'>
         <div className='py-1 px-6 w-1/5 flex flex-row-reverse items-center justify-evenly gap-5'>
             <ActionIcon ><MdShoppingCart className='text-gray-800 hover:text-[#5500FF] text-3xl p-'/></ActionIcon>
             <ActionIcon  onClick={(e:any)=>{setOpenModal(true)}}><FaUserCircle className='text-gray-800 hover:text-[#5500FF] text-3xl'/></ActionIcon>

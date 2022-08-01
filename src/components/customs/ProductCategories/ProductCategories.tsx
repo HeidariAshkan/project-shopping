@@ -11,8 +11,8 @@ interface IProps{
 
 function ProductCategories({category}:IProps) {
 
-    const childCategory = useMemo(()=>{
-        return category.category.filter((item:any)=> item.children === null)
+    const parentCategory = useMemo(()=>{
+        return category.category.filter((item:any)=> item.parent === null)
     },[category])
     // console.log(childCategory)
 
@@ -22,12 +22,12 @@ function ProductCategories({category}:IProps) {
             <h1 className="text-black text-4xl text-center font-semibold">دسته بندی</h1>
             <div className="flex gap-3 items-center">
                 {
-                    childCategory.map((item:any)=>(
-                        <div key={item.id} className="bg-cover bg-[#fefefe] cursor-pointer rounded-md ">
-                        <Link href={`products/?categroys=${item.name}`}>
-                            <img className='w-full rounded-md' src={item.image} alt="pic" />
+                    parentCategory.map((item:any)=>(
+                        <Link key={item.id} href={`products/?categorys=${item.name}`}>
+                            <div className="bg-cover bg-no-repeat bg-center bg-[#fefefe] cursor-pointer rounded-full p-24 shadow-lg" style={{backgroundImage:`url(${item.image})`}}>
+                                {/* <img className='w-full rounded-full' src={item.image} alt="pic" /> */}
+                            </div>
                         </Link>
-                        </div>
                     ))
                 }
             </div>
