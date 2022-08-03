@@ -12,7 +12,7 @@ import { getProduct } from './../src/redux/slice/productSlice';
 import { useSelector, useDispatch } from 'react-redux';
 import { getCategory } from './../src/redux/slice/categorySlice';
 import Autoplay from 'embla-carousel-autoplay';
-
+import { TextInput } from '@mantine/core';
 interface IItem {
   id:number,
   parent:null | [],

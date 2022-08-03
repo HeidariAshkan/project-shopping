@@ -17,7 +17,7 @@ import { useRouter } from "next/router";
 
 function AllProduct() {
 
-    const product = useSelector((store:RootState) => store.productSlice);
+    const product = useSelector((store:RootState) => store.productSlice.product);
     const category = useSelector((store:RootState) => store.categorySlice);
 
     // pages
@@ -35,16 +35,15 @@ function AllProduct() {
 
     const [discountProduct , setDiscountProduct] = useState<boolean>(false)
 
-    const [filterProduct , setFilterProduct] = useState<any>([])
+    const [filterProduct , setFilterProduct] = useState<any>(product)
 
-    const [filterGrouping , setFilterGrouping ] = useState<string | null>("")
+    const [filterGrouping , setFilterGrouping ] = useState<string | null >(null)
 
     const [sortProduct , setSortProduct] = useState<string | null>('')
 
     const [categoryParam , setCategoryParam] = useState<string | string[] | undefined >('')
 
-    
-    
+
     
     
     
@@ -56,84 +55,52 @@ function AllProduct() {
     useEffect(()=>{
         dispatch(getProduct())
         dispatch(getCategory())
-        setSortProduct('Default')
-        setCategoryParam(router.query.categorys)
+        // setCategoryParam(router.query.categorys)
     },[])
 
+    
     const filterCategory = useMemo(()=>{
-      if(categoryParam === 'الکترونیکی'){
-        return category.category.filter((item:any)=> item.id === 8 || item.id === 2 || item.id === 3)
-      }
-      else if(categoryParam === 'مد و پوشاک'){
-        return category.category.filter((item:any)=> item.id === 5 || item.id === 6 || item.id === 7)
-      }
-      else{
-        return [];
-      }
-    },[categoryParam , category])
+      return category.category.filter((item:any) => item.children === null)
+    },[category])
+    
 
+    // filter Product by Filtergroup and exsitProduct and discountProduct
+    const filterProductByFilterGrouping = useMemo(()=>{
+      if(filterGrouping === null){
+        return product
+      }
+      return product.filter((item:any) => item.category === filterGrouping)
+    },[filterGrouping,product])
 
-    // filter Podduct ManageMent !!
+    const filterProductByExsitProduct = useMemo(()=>{
+      if(exsitProduct === false){
+        return filterProductByFilterGrouping
+      }
+      return filterProductByFilterGrouping.filter((item:any) => item.remaining > 0)
+    },[exsitProduct,filterProductByFilterGrouping])
+
+    const filterProductByDiscountProduct = useMemo(()=>{
+      if(discountProduct === false){
+        return filterProductByExsitProduct
+      }
+      return filterProductByExsitProduct.filter((item:any) => item.featured === true)
+    },[discountProduct,filterProductByExsitProduct])
+
+    const filterProductByRangeFilter = useMemo(()=>{
+      return filterProductByDiscountProduct.filter((item:any) => item.price >= rangeFilter[0] && item.price <= rangeFilter[1])
+    },[rangeFilter,filterProductByDiscountProduct])
+
+    const filterProductByCategory = useMemo(()=>{
+      if(categoryParam === ''){
+        return filterProductByRangeFilter
+      }
+      return filterProductByRangeFilter.filter((item:any) => item.category === categoryParam)
+    },[categoryParam,filterProductByRangeFilter])
+  
+
     useEffect(()=>{
-      let id:number = filterCategory?.find((item:any)=> item.name === filterGrouping)?.id
-      if(id){
-            const productFiltred:any = product.product?.filter((item:any)=> item.category === id)
-            setFilterProduct(productFiltred)
-      }
-      if(!id){
-        if(categoryParam === "الکترونیکی"){
-          setFilterProduct(product.product?.filter((item:any)=> item.category === 8 || item.category === 2 || item.category === 3 ))
-        }
-        if(categoryParam === "مد و پوشاک"){
-          setFilterProduct(product.product?.filter((item:any)=> item.category === 5 || item.category === 6 || item.category === 7 ))
-        }
-      }
-      if(rangeFilter[0] !== 90000 || rangeFilter[1] !== 180000000){
-        if(id){
-          setFilterProduct(filterProduct.filter((item:any)=> item.final_price >= rangeFilter[0] && item.final_price <= rangeFilter[1]))
-        }
-        else{
-          if(categoryParam === 'الکترونیکی'){
-            const productFiltred:any = product.product?.filter((item:any)=> item.category === 8 || item.category === 2 || item.category === 3 )
-            setFilterProduct(productFiltred.filter((item:any)=> item.final_price >= rangeFilter[0] && item.final_price <= rangeFilter[1]))
-          }
-          if(categoryParam === "مد و پوشاک"){
-            const productFiltred:any = product.product?.filter((item:any)=> item.category === 5 || item.category === 6 || item.category === 7 )
-            setFilterProduct(productFiltred.filter((item:any)=> item.final_price >= rangeFilter[0] && item.final_price <= rangeFilter[1]))
-          }
-        }
-      }
-      if(discountProduct){
-        if(id){
-          setFilterProduct(filterProduct.filter((item:any)=> item.featured === true))
-        }
-        else{
-          if(categoryParam === 'الکترونیکی'){
-            const productFiltred:any = product.product?.filter((item:any)=> item.category === 8 || item.category === 2 || item.category === 3 )
-            setFilterProduct(productFiltred.filter((item:any)=>item.featured === true))
-          }
-          if(categoryParam === "مد و پوشاک"){
-            const productFiltred:any = product.product?.filter((item:any)=> item.category === 5 || item.category === 6 || item.category === 7 )
-            setFilterProduct(productFiltred.filter((item:any)=>item.featured === true))
-          }
-        }
-      }
-      if(exsitProduct){
-        if(id){
-          setFilterProduct(filterProduct.filter((item:any)=> item.remaining > 0))
-        }
-        else{
-          if(categoryParam === 'الکترونیکی'){
-            const productFiltred:any = product.product?.filter((item:any)=> item.category === 8 || item.category === 2 || item.category === 3 )
-            setFilterProduct(productFiltred.filter((item:any)=>item.remaining > 0))
-          }
-          if(categoryParam === "مد و پوشاک"){
-            const productFiltred:any = product.product?.filter((item:any)=> item.category === 5 || item.category === 6 || item.category === 7 )
-            setFilterProduct(productFiltred.filter((item:any)=>item.remaining > 0))
-          }
-        }
-      }
-    },[filterGrouping , product , rangeFilter , exsitProduct , discountProduct , categoryParam])
+      setFilterProduct(filterProductByCategory)
+    },[filterProductByCategory])
 
     // sorting Products
     useEffect(()=>{
@@ -151,18 +118,28 @@ function AllProduct() {
       }
     },[sortProduct])
 
-    // turn off Filtering Discount and Exist after change ID
-    useEffect(()=>{
-      setExistProduct(false)
-      setDiscountProduct(false)
-      setRangeFilter([90000 , 180000000])
-    },[filterGrouping])
+    const handleAddFilterCategory = (id:any)=>{
+      setFilterGrouping(id)
+    }
+
+    const handleAddFilterExist = (e:any)=>{
+      setExistProduct(e.currentTarget.checked)
+    }
+
+    const handleAddFilterDiscount = (e:any)=>{
+      setDiscountProduct(e.currentTarget.checked)
+    }
+
+    const handleAddFilterRange = (e:any)=>{
+      setRangeFilter([e[0] , e[1]])
+    }
 
     // Page Maker
     useEffect(()=>{
       setTotalPage(Math.ceil(filterProduct.length / 12));
       setStartRecord((page - 1) * 12);
       setEndRecord(page * 12);
+      window.scrollTo(0, 0);
     },[page , filterProduct])
 
     
@@ -171,22 +148,35 @@ function AllProduct() {
       <div className="flex flex-col gap-4 p-4 border border-[#5500FF] rounded-xl sticky top-3 self-start mt-16">
          <h1 className="text-2xl">فیلترها</h1>
          <div className="flex flex-col gap-5">
-            <Select className="border-[#5500FF]" rightSection={<AiFillCaretDown/>} allowDeselect data={filterCategory?.map((item:any)=> item.name)} placeholder="دسته بندی" value={filterGrouping} onChange={setFilterGrouping}/> 
-            <Select rightSection={<AiFillCaretDown/>} allowDeselect data={["react" ,"tsx"]} placeholder="برند" />
-            
+            {/* <Select className="border-[#5500FF]" rightSection={<AiFillCaretDown/>} allowDeselect data={filterCategory?.map((item:any)=> {return({value:item.id,label:item.name.toLocaleString()})})} placeholder="دسته بندی" value={filterGrouping} onChange={setFilterGrouping}/>  */}
+            <Menu>
+                <Menu.Target>
+                  <button className="px-4 py-1 border text-[#fefefe] bg-[#5500FF] rounded-md hover:bg-[#5500FF] hover:bg-opacity-80 transition-all duration-500">دسته بندی</button>
+                </Menu.Target>
+                <Menu.Dropdown>
+                  <Menu.Item onClick={()=>{setFilterGrouping(null)}} className="text-center">
+                    همه
+                  </Menu.Item>
+                  {filterCategory?.map((item:any)=>(
+                    <Menu.Item onClick={()=>{handleAddFilterCategory(item.id)}} className="text-center" key={item.id}>
+                      {item.name}
+                    </Menu.Item>
+                  ))}
+                </Menu.Dropdown>
+            </Menu>
             <Menu width={200} shadow="md">
                 <Menu.Target>
                   <button className="px-4 py-1 border text-[#5500FF] rounded-md hover:bg-gray-100 transition-all duration-500">محدوده قیمت</button>
                 </Menu.Target>
                 <Menu.Dropdown>
-                  <Menu.Item><RangeSlider min={90000} max={180000000}  size="xs" value={rangeFilter} defaultValue={[90000 , 180000000]} onChange={setRangeFilter}/></Menu.Item>
+                  <Menu.Item><RangeSlider min={90000} max={180000000}  size="xs" value={rangeFilter} defaultValue={[90000 , 180000000]} onChange={handleAddFilterRange}/></Menu.Item>
                 </Menu.Dropdown>
             </Menu>
             <div dir="ltr">
-              <Switch className="" checked={exsitProduct} onChange={(event) => setExistProduct(event.currentTarget.checked)} label="کالا های موجود در انبار"/>
+              <Switch checked={exsitProduct} onChange={handleAddFilterExist} label="کالا های موجود در انبار"/>
             </div>
             <div dir="ltr">
-              <Switch checked={discountProduct} onChange={(event) => setDiscountProduct(event.currentTarget.checked)} label="کالا های تخفیف دار"/>
+              <Switch checked={discountProduct} onChange={handleAddFilterDiscount} label="کالا های تخفیف دار"/>
             </div>
          </div>
       </div>
@@ -244,6 +234,3 @@ function AllProduct() {
 }
 
 export default AllProduct;
-
-
-

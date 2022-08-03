@@ -84,6 +84,7 @@ function ModalLogin({ open, close }: IProps) {
         </div>
       </div>
     </Modal>
+    
   );
 }
 

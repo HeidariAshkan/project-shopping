@@ -1,5 +1,6 @@
 import { Button } from '@mantine/core'
 import React, { useMemo } from 'react'
+import Link from 'next/link';
 
 
 interface IProps{
@@ -38,11 +39,13 @@ function AmazingOffer({ product }:IProps) {
             <div className='flex gap-4 items-center z-0'>
                 {
                     productFeaturedRandom.slice(0,7).map((item:any)=>(
-                        <div key={item.id} style={{backgroundImage:`url(${item.main_image})`}} className='relative bg-[#fefefe] rounded-full w-20 h-20 cursor-pointer bg-cover shadow-sm'>
-                            <p className='absolute bottom-1 right-1 bg-[#EF4056] text-white px-2 rounded-3xl hover:text-[#EF4056] hover:bg-white transition-all duration-500 hover:shadow-md'>
-                                {100 - +(item.final_price * 100 / item.price).toFixed()}%
-                            </p>
-                        </div>
+                        <Link href={`products/${item.id}`}>
+                            <div key={item.id} style={{backgroundImage:`url(${item.main_image})`}} className='relative bg-[#fefefe] rounded-full w-20 h-20 cursor-pointer bg-cover shadow-sm'>
+                                <p className='absolute bottom-1 right-1 bg-[#EF4056] text-white px-2 rounded-3xl hover:text-[#EF4056] hover:bg-white transition-all duration-500 hover:shadow-md'>
+                                    {100 - +(item.final_price * 100 / item.price).toFixed()}%
+                                </p>
+                            </div>
+                        </Link>
                     ))
                 }
             </div>
