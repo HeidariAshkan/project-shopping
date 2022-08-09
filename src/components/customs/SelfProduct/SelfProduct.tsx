@@ -2,8 +2,24 @@ import React, { useState, useMemo } from "react";
 import { BiCheckShield, BiCoinStack } from "react-icons/bi";
 import { Button } from "@mantine/core";
 import { Select } from "@mantine/core";
-import { AiOutlineCheck } from "react-icons/ai";
+import { AiOutlineCheck , AiFillStar, AiOutlinePlusCircle, AiOutlineMinusCircle } from "react-icons/ai";
 import Link from "next/link";
+import { useHorizontalScroll } from './../../../utils/useHorizontalScroll';
+import { useDispatch , useSelector } from 'react-redux';
+import { addToCart , DecreseToCart } from "../../../redux/slice/orderCartSlice";
+import { useId } from '@mantine/hooks';
+
+interface OrderCartState {
+  description: string;
+  featured: boolean;
+  final_price: any;
+  id: string;
+  main_image: string;
+  name: string;
+  count?: any;
+  idProduct:number
+  options:string | null
+}
 
 interface IProps {
   product: {
@@ -28,11 +44,12 @@ interface IProps {
   };
 }
 function SelfProduct({ product, allProduct }: IProps) {
-  //   console.log(product);
-
   const [optionsPicked, setOptionsPicked] = useState<string | null>(null);
+  const scrollRef = useHorizontalScroll();
+  const dispatch = useDispatch()
 
-  //   console.log(optionsPicked)
+  const cart = useSelector((store:any)=>store.orderCartSlice.cart)
+  console.log(cart)
 
   const optionsSelect = useMemo(() => {
     if (product.options) {
@@ -51,7 +68,6 @@ function SelfProduct({ product, allProduct }: IProps) {
       return [];
     }
   }, [allProduct]);
-  console.log(sameLikeProduct);
 
   return (
     <div className="my-10">
@@ -59,7 +75,7 @@ function SelfProduct({ product, allProduct }: IProps) {
         <div className="w-2/4 mx-3">
           <img className="rounded-lg" src={product?.main_image} alt="pic" />
           <div className="flex justify-center w-full">
-            <button className="border rounded-lg w-2/5 hover:shadow-2xl hover:w-2/4 transition-all duration-1000">
+            <button className="border rounded-lg w-2/6 hover:shadow-2xl hover:w-2/4 transition-all duration-1000">
               <img className="rounded-lg" src={product.images} alt="pic" />
             </button>
           </div>
@@ -112,6 +128,21 @@ function SelfProduct({ product, allProduct }: IProps) {
                   </button>
                 ))}
               </div>
+              <div className="flex items-center gap-3">
+                <p className="text-lg">امتیاز:</p>
+                <div className="flex text-yellow-500">
+                  <AiFillStar/>
+                  <AiFillStar/>
+                  <AiFillStar/>
+                  <AiFillStar/>
+                  <AiFillStar/>
+                </div>
+              </div>
+              <div className="flex items-center justify-evenly">
+                <img src="https://img.icons8.com/nolan/64/shop.png"/>
+                <img src="https://img.icons8.com/nolan/64/delivery.png"/>
+                <img src="https://img.icons8.com/nolan/64/online-order.png"/>
+              </div>
               <p className="text-xs w-full">
                 هشدار سامانه همتا: در صورت انجام معامله، از فروشنده کد فعالسازی
                 را گرفته و حتما در حضور ایشان، دستگاه را از طریق #7777*، برای
@@ -123,7 +154,7 @@ function SelfProduct({ product, allProduct }: IProps) {
                 را مرجوع کنید.
               </p>
             </div>
-            <div className="flex flex-col p-4 border border-[#5500FF] rounded-md w-2/6 text-center gap-2 mt-4">
+            <div className="flex flex-col p-4 border border-[#5500FF] rounded-md w-2/6 text-center gap-2 mt-4 justify-between">
               <p className="text-md text-[#EF4056] text-start">
                 {product.featured === true ? "فروش ویژه" : ""}
               </p>
@@ -165,34 +196,98 @@ function SelfProduct({ product, allProduct }: IProps) {
               >
                 {parseInt(product?.final_price).toLocaleString("fa-IR")}
               </p>
-              <Button
-                variant="light"
-                className="bg-[#5500FF] text-white hover:bg-opacity-10 hover:text-[#5500FF] transition-all duration-500"
-              >
-                افزودن به سبد
-              </Button>
+              {
+                    (cart?.find((item:any)=>item.idProduct === product.id && item.options === optionsPicked)?.count > 0) ?
+                      
+                        <div className="flex justify-center text-black items-center gap-4">
+                          <Button onClick={()=>{
+                          if(optionsPicked !== null){
+                          const cart:OrderCartState = {
+                            id:useId(product?.id?.toString() + optionsPicked),
+                            idProduct:product?.id,
+                            main_image:product?.main_image,
+                            final_price:product?.final_price,
+                            name:product?.name,
+                            featured:product?.featured,
+                            description:product?.description,
+                            options:optionsPicked,
+                            count:1,
+                          }
+                          dispatch(addToCart(cart))
+                        }
+                        else{
+                          return alert('Please select options')
+                        }}} className="bg-[#fefefe] text-[#5500FF] hover:text-[#5500FF] transition-all duration-500" variant="light">
+                            <AiOutlinePlusCircle/>
+                          </Button>
+                          <p className="text-[#5500FF]">{cart?.find((item:any)=>item.idProduct === product.id && item.options === optionsPicked).count}</p>
+                          <Button onClick={()=>{
+                              const cart:OrderCartState = {
+                                id:useId(product?.id?.toString() + optionsPicked),
+                                idProduct:product?.id,
+                                main_image:product?.main_image,
+                                final_price:product?.final_price,
+                                name:product?.name,
+                                featured:product?.featured,
+                                description:product?.description,
+                                options:optionsPicked,
+                                count:0,
+                                }
+                                dispatch(DecreseToCart(cart))
+                                              
+                          }} className="bg-[#fefefe] text-[#5500FF] hover:text-[#5500FF] transition-all duration-500"  variant="light">
+                            <AiOutlineMinusCircle/>
+                          </Button>
+                        </div>
+                        :
+                        <Button
+                        variant="light"
+                        onClick={()=>{
+                          if(optionsPicked !== null){
+                          const cart:OrderCartState = {
+                            id:useId(product?.id?.toString() + optionsPicked),
+                            idProduct:product?.id,
+                            main_image:product?.main_image,
+                            final_price:product?.final_price,
+                            name:product?.name,
+                            featured:product?.featured,
+                            description:product?.description,
+                            options:optionsPicked,
+                            count:1,
+                          }
+                          dispatch(addToCart(cart))
+                        }
+                        else{
+                          return alert('Please select options')
+                        }
+                      }}
+                        className="bg-[#5500FF] text-white hover:bg-opacity-10 hover:text-[#5500FF] transition-all duration-500"
+                      >
+                        افزودن به سبد
+                      </Button>
+              }
             </div>
           </div>
-          <div className="mt-16 p-4 border rounded flex flex-col gap-4 overflow-auto">
+          <div  className="mt-16 p-4 border rounded flex flex-col gap-4 overflow-x-auto">
             <h1>کالا های مشابه:</h1>
-            <div className="p-4 flex gap-4 overflow-auto">
+            <div ref={scrollRef} className="p-4 flex gap-4 overflow-auto">
               {sameLikeProduct.slice(0, 5).map((item: any) => (
                 <div
                   key={item.id}
-                  className="flex flex-col p-4 border border-[#5500FF] rounded-md w-full gap-2"
+                  className="flex flex-col justify-between p-4 border border-[#5500FF] rounded-md gap-2 w-full"
                 >
                   <img src={item.main_image} />
                   <div
                     className="flex flex-col items-center gap-2 text-sm"
                     dir="rtl"
                   >
-                    <p className="">
+                    <p className="text-xs">
                       {parseInt(item.final_price).toLocaleString("fa-IR")} تومان
                     </p>
                     <Link href={`/products/${item.id}`}>
                       <Button
                         variant="filled"
-                        className="bg-[#5500FF] text-white px-6 py-1 hover:text-[#5500FF] hover:bg-[#fefefe] transiton-all duration-500 rounded-md"
+                        className="bg-[#5500FF] text-white px-6 py-1 hover:text-[#5500FF] hover:bg-[#fefefe] transiton-all duration-500 rounded-md hover:border-[#5500FF] hover:border"
                       >
                         خرید
                       </Button>

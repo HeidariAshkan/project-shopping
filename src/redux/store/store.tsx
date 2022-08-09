@@ -3,6 +3,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import categorySlice from "./../slice/categorySlice";
 import productSlice from "./../slice/productSlice"
 import selfProductSlice from "./../slice/selfProductSlice"
+import orderCartSlice from './../slice/orderCartSlice'
 
 
 export const store = configureStore({
@@ -10,6 +11,7 @@ export const store = configureStore({
         categorySlice,
         productSlice,
         selfProductSlice,
+        orderCartSlice,
     },
 })
 

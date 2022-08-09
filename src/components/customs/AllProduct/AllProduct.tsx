@@ -9,6 +9,7 @@ import { useSelector , useDispatch } from "react-redux";
 import { getProduct } from './../../../redux/slice/productSlice';
 import { getCategory } from './../../../redux/slice/categorySlice';
 import { useRouter } from "next/router";
+import Link from "next/link"
 
 
 
@@ -26,6 +27,7 @@ function AllProduct() {
     const [page , setPage] = useState<number>(1)
     const [totalPage , setTotalPage] = useState<number>(1)
 
+    console.log(product)
 
 
     // filters
@@ -197,7 +199,9 @@ function AllProduct() {
         <div className="grid grid-cols-3 gap-4">
           {
             filterProduct?.slice(startRecord,endRecord).map((item:any) => (
-            <div key={item.id} className="border rounded-lg p-2 flex flex-col justify-between hover: hover:shadow-2xl cursor-pointer">
+            
+            <Link key={item.id} href={`/products/${item.id}`}>
+            <div className="border rounded-lg p-2 flex flex-col justify-between hover: hover:shadow-2xl cursor-pointer">
                 <img className="w-full" src={item.main_image} alt="pic" />
                 <div>
                     <h4 className="w-full truncate">{item.description}</h4>
@@ -222,6 +226,7 @@ function AllProduct() {
                     </div>
                 </div>
             </div>
+              </Link>
             ))
           }
         </div>

@@ -88,7 +88,7 @@ useEffect(() => {
           <ProductCategories category={category}/>
           <div className='flex flex-col gap-6 p-2 border rounded-xl w-[95%] items-center mb-16 pb-6'>
             <h1 className='text-center text-2xl font-semibold flex flex-row-reverse'>منتخب محصولات تخفیف و حراج <img className='w-8' src="https://img.icons8.com/color/48/000000/discount--v1.png"/></h1>
-            <div className="grid grid-cols-1 2xl:grid-cols-7 lg:grid-cols-5 content-center items-center md:grid-cols-4 sm:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 2xl:grid-cols-6 lg:grid-cols-4 content-center items-center md:grid-cols-3 sm:grid-cols-2 gap-4 justify-items-stretch">
               <CardBestBuy product={product} />
             </div>
           </div>
