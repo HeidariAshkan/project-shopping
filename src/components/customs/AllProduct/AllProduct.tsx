@@ -2,13 +2,14 @@ import React , { useState , useEffect , useMemo, useLayoutEffect } from "react";
 import { BsFilterRight } from "react-icons/bs";
 import { BsStarFill } from "react-icons/bs";
 import { GrAdd } from "react-icons/gr";
-import { Button, Select , Menu , RangeSlider , Switch , Pagination  } from '@mantine/core';
+import { Button, Select , Menu , RangeSlider , Switch , Pagination } from '@mantine/core';
 import { AiFillCaretDown } from 'react-icons/ai';
 import { RootState } from '../../../redux/store/store';
 import { useSelector , useDispatch } from "react-redux";
 import { getProduct } from './../../../redux/slice/productSlice';
 import { getCategory } from './../../../redux/slice/categorySlice';
-import { useRouter } from "next/router";
+import { Router, useRouter } from "next/router";
+
 import Link from "next/link"
 
 
@@ -27,7 +28,9 @@ function AllProduct() {
     const [page , setPage] = useState<number>(1)
     const [totalPage , setTotalPage] = useState<number>(1)
 
-    console.log(product)
+  
+
+    // console.log(product)
 
 
     // filters
@@ -39,11 +42,11 @@ function AllProduct() {
 
     const [filterProduct , setFilterProduct] = useState<any>(product)
 
-    const [filterGrouping , setFilterGrouping ] = useState<string | null >(null)
+    const [filterGrouping , setFilterGrouping ] = useState<string | number | null >(null)
 
     const [sortProduct , setSortProduct] = useState<string | null>('')
 
-    const [categoryParam , setCategoryParam] = useState<string | string[] | undefined >('')
+    // const [categoryParam , setCategoryParam] = useState<string | string[] | undefined >('')
 
 
     
@@ -51,14 +54,27 @@ function AllProduct() {
     
     
     const router = useRouter()
-    const { categorys } = router.query
     const dispatch = useDispatch()
     
     useEffect(()=>{
         dispatch(getProduct())
-        dispatch(getCategory())
-        // setCategoryParam(router.query.categorys)
-    },[])
+        dispatch(getCategory())   
+      },[])
+
+
+    useEffect(()=>{
+      if(router.query.categorys !== "" && router.query.categorys !== undefined){
+        setFilterGrouping(+(router.query.categorys))
+      }
+      else if(router.query.discount !== "" && router.query.discount !== undefined){
+        setDiscountProduct(true)
+      }
+      else{
+        setFilterGrouping(null)
+      }
+    },[router])
+
+    // console.log(filterGrouping)
 
     
     const filterCategory = useMemo(()=>{
@@ -92,17 +108,20 @@ function AllProduct() {
       return filterProductByDiscountProduct.filter((item:any) => item.price >= rangeFilter[0] && item.price <= rangeFilter[1])
     },[rangeFilter,filterProductByDiscountProduct])
 
-    const filterProductByCategory = useMemo(()=>{
-      if(categoryParam === ''){
-        return filterProductByRangeFilter
-      }
-      return filterProductByRangeFilter.filter((item:any) => item.category === categoryParam)
-    },[categoryParam,filterProductByRangeFilter])
+
+    // const filterProductByCategory = useMemo(()=>{
+    //   if(categoryParam !== ''){
+    //     return filterProductByRangeFilter.filter((item:any) => item.category === categoryParam)
+    //   }
+    //   return filterProductByRangeFilter
+    // },[categoryParam,filterProductByRangeFilter])
   
+    // console.log(category)
+    // console.log(filterGrouping)
 
     useEffect(()=>{
-      setFilterProduct(filterProductByCategory)
-    },[filterProductByCategory])
+      setFilterProduct(filterProductByRangeFilter)
+    },[filterProductByRangeFilter])
 
     // sorting Products
     useEffect(()=>{
@@ -121,6 +140,9 @@ function AllProduct() {
     },[sortProduct])
 
     const handleAddFilterCategory = (id:any)=>{
+      router.replace({
+        query:{ categorys : id}
+      })
       setFilterGrouping(id)
     }
 
@@ -129,6 +151,17 @@ function AllProduct() {
     }
 
     const handleAddFilterDiscount = (e:any)=>{
+      if(e.currentTarget.checked){
+        router.replace({
+          query:{discount : true}
+        })
+
+      }
+      else{
+        const params:any = new URLSearchParams(router.query);
+        params.delete('discount');
+        router.push({pathname:params.toString()})
+      }
       setDiscountProduct(e.currentTarget.checked)
     }
 
@@ -146,8 +179,10 @@ function AllProduct() {
 
     
   return (
-    <div className="flex items-center gap-3 my-10">
-      <div className="flex flex-col gap-4 p-4 border border-[#5500FF] rounded-xl sticky top-3 self-start mt-16">
+    <>
+
+    <div className="flex items-center gap-3 my-10 justify-center">
+      <div className={`flex flex-col gap-4 p-4 border border-[#5500FF] rounded-xl sticky top-3 self-start mt-16`}>
          <h1 className="text-2xl">فیلترها</h1>
          <div className="flex flex-col gap-5">
             {/* <Select className="border-[#5500FF]" rightSection={<AiFillCaretDown/>} allowDeselect data={filterCategory?.map((item:any)=> {return({value:item.id,label:item.name.toLocaleString()})})} placeholder="دسته بندی" value={filterGrouping} onChange={setFilterGrouping}/>  */}
@@ -156,7 +191,7 @@ function AllProduct() {
                   <button className="px-4 py-1 border text-[#fefefe] bg-[#5500FF] rounded-md hover:bg-[#5500FF] hover:bg-opacity-80 transition-all duration-500">دسته بندی</button>
                 </Menu.Target>
                 <Menu.Dropdown>
-                  <Menu.Item onClick={()=>{setFilterGrouping(null)}} className="text-center">
+                  <Menu.Item onClick={()=>{setFilterGrouping(null);const params:any = new URLSearchParams(router.query);params.delete('categorys');router.push({pathname:params.toString()})}} className="text-center">
                     همه
                   </Menu.Item>
                   {filterCategory?.map((item:any)=>(
@@ -235,6 +270,7 @@ function AllProduct() {
         </div> 
       </div>
     </div>
+          </>
   );
 }
 

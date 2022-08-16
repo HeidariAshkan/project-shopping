@@ -25,6 +25,7 @@ function Header() {
     const cart = useSelector((state:any)=>state.orderCartSlice)
     const [modalLogOut , setModalLogOut] = useState<boolean>(false)
     const [modalBuy , setModalBuy] = useState<boolean>(false)
+    const[myCookie , setMyCookie] = useState<string | null | undefined>(undefined)
 
     useEffect(()=>{
         if(input !== ""){
@@ -34,8 +35,11 @@ function Header() {
             setOpenSearch(false)
         }
     },[input])
+    useEffect(()=>{     
+        setMyCookie(Cookies.get('token'))
+    },[])
+    // console.log(myCookie)
 
-    const myCookie = Cookies.get('token')
 
   return (
     <div className='flex flex-row-reverse justify-between items-center p-4 sticky z-50'>
@@ -52,7 +56,7 @@ function Header() {
             <form className='relative px-4 bg-[#F0F0F1] rounded-md flex justify-around items-center'>
                 <input type="text" className="w-full bg-inherit border-none py-1 outline-none focus:ring-0" placeholder="جستوجو" name='search' value={input} onChange={(e)=>{setInput(e.target.value)}}/>
                 <button type='submit'><GoSearch className='text-black text-opacity-60'/></button>
-                <SearchProduct text={input} open={openSearch} close={setOpenSearch}/>
+                <SearchProduct text={input} setText={setInput} open={openSearch} close={setOpenSearch}/>
             </form>
         </div>
         <div className='w-1/5 py-1 px-6 flex flex-row-reverse items-center justify-evenly gap-5'>

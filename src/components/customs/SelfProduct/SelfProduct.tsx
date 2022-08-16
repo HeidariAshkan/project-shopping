@@ -49,11 +49,13 @@ function SelfProduct({ product, allProduct }: IProps) {
   const dispatch = useDispatch()
 
   const cart = useSelector((store:any)=>store.orderCartSlice.cart)
-  console.log(cart)
+  // console.log(cart)
+  // console.log(optionsPicked)
 
   const optionsSelect = useMemo(() => {
     if (product.options) {
-      return product?.options?.value.map((item: any) => item);
+      setOptionsPicked(null)
+      return product?.options?.value.map((item: any) => item.toString());
     } else {
       return [];
     }
@@ -97,7 +99,7 @@ function SelfProduct({ product, allProduct }: IProps) {
                   <button
                     key={item}
                     onClick={() => {
-                      setOptionsPicked(item);
+                      setOptionsPicked(item.toString());
                     }}
                     className={`p-4 rounded-full text-white ${
                       item === "آبی"
@@ -122,7 +124,7 @@ function SelfProduct({ product, allProduct }: IProps) {
                     {product?.options?.name !== "رنگ" ? item : ""}
                     <AiOutlineCheck
                       className={`${
-                        item === optionsPicked ? "block" : "hidden"
+                        item.toString() === optionsPicked ? "block" : "hidden"
                       }`}
                     />
                   </button>

@@ -13,7 +13,7 @@ interface OrderCartState {
     options:string
 }
 interface initialState {
-    cart:any,
+    cart:OrderCartState[] |any,
     status:'idle'|'pending'|'succeeded'|'failed'
 }
 

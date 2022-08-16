@@ -54,7 +54,7 @@ function SummaryOfProduct({ category , product }:IProps) {
                 {
                     randomProduct.slice(0 , 10).map((item:any)=>(
                         <Link key={item.id}  href={`/products/${item.id}`}>
-                            <div className='bg-[#fefefe] h-[270px] w-[25%] p-2 flex flex-col items-center gap-4 rounded-md justify-between border border-[#5500FF] shadow-md '>
+                            <div className='bg-[#fefefe] h-[270px] w-44 p-2 flex flex-col items-center gap-4 rounded-md justify-between border border-[#5500FF] shadow-md '>
                                 <img className='w-full rounded-md h-[160px]' alt="pic" src={item.main_image}/>
                                 <div className="w-[160px] flex flex-col items-center gap-2" dir="rtl">
                                     <p className="">{parseInt(item.final_price).toLocaleString('fa-IR')} تومان</p>

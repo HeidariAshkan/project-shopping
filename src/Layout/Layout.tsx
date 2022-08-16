@@ -4,13 +4,14 @@ import Footer from '../components/common/Footer/Footer';
 
 interface IProps {
     children: React.ReactNode
+    className: string
 }
 
 
-function Layout({children}: IProps) {
+function Layout({children , className}: IProps) {
   return (
     <>
-    <div>
+    <div dir="rtl" className={className}>
         <Header/>
           {children}
         <Footer/>

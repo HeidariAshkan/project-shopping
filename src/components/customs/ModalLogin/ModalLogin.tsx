@@ -63,8 +63,9 @@ function ModalLogin({ open, close }: IProps) {
     if(data.status === 'failed'){
     notficationStyle()
     }else{
+      (router.pathname === "/signup") ? router.push('/') : ""
       close(false)
-      router.push('/')
+      // router.push('/')
     }
     })
     }

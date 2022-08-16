@@ -7,6 +7,7 @@ import { getSelfProduct } from './../../src/redux/slice/selfProductSlice';
 import Layout from './../../src/Layout/Layout';
 import SelfProduct from './../../src/components/customs/SelfProduct/SelfProduct';
 import { getProduct } from './../../src/redux/slice/productSlice';
+import { LoadingOverlay } from '@mantine/core';
 
 function id() {
 
@@ -16,6 +17,7 @@ function id() {
   const router = useRouter()
 
   const [idProduct , setIdProduct] = useState<string | string[] |undefined>('')
+  const [visible, setVisible] = useState<boolean>(false);
 
   useEffect(()=>{
     setIdProduct(router.query.id)
@@ -28,16 +30,31 @@ function id() {
     }
   },[idProduct])
 
+  useEffect(()=>{
+    if(selfProduct.status === "succeeded" && allProduct.status === "succeeded"){
+      setVisible(false)
+    }
+    else{
+      setVisible(true)
+    }
+  },[selfProduct , allProduct])
+
 
   return (
-    
-    <div dir='rtl' className="relative">
-      <Layout>
+    <>
+      <div className={`${(visible) ? "" : "hidden"}`}>
+      <LoadingOverlay visible={visible} overlayBlur={8} 
+      loaderProps={{ size: 'xl', color: '#5500FF', variant: 'oval' }}
+      overlayOpacity={0.3}
+      overlayColor="#b5b5b5" />
+        {/* ...other content */}
+      </div>
+      <Layout className={`${(visible) ? "hidden" : "block"}`}>
           <div>
             <SelfProduct allProduct={allProduct} product={selfProduct?.selfProduct}/>
           </div>
       </Layout>
-    </div>
+      </>
   )
 }
 
