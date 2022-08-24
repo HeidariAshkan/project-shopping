@@ -6,12 +6,16 @@ module.exports = {
     "./src/**/*.{js,ts,jsx,tsx}",
     "./components/**/*.{js,ts,jsx,tsx}",
   ],
+  important: true,
   theme: {
     extend: {},
     screens: {
       xs:{"max": "457px"},
       ...defaultTheme.screens
     },
+    fontFamily:{
+      IR:'IRANSans',
+    }
   },
   plugins: [],
 }

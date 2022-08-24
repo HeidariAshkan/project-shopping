@@ -8,7 +8,7 @@ import { Button } from '@mantine/core';
 
 function Footer() {
   return (
-    <div className='w-full'>
+    <div className='w-full font-IR'>
         <div className='flex flex-col items-center gap-5'>
             <h1 className='text-2xl font-semibold'>همین حالا عضو ما بشو!</h1>
             <Link href="/signup">

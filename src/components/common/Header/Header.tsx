@@ -38,11 +38,15 @@ function Header() {
     useEffect(()=>{     
         setMyCookie(Cookies.get('token'))
     },[])
+    
+    useEffect(()=>{     
+        setMyCookie(Cookies.get('token'))
+    },[Cookies.get('token')])
     // console.log(myCookie)
 
 
   return (
-    <div className='flex flex-row-reverse justify-between items-center p-4 sticky z-50'>
+    <div className='flex flex-row-reverse justify-between items-center p-4 sticky z-50 font-IR'>
         <div className='py-1 px-6 w-1/5 flex flex-row-reverse items-center justify-evenly gap-5'>
             <div className='relative'>
                 <ActionIcon onClick={()=>{setOpenCart(!openCart)}}><MdShoppingCart className={`hover:text-[#5500FF] relative text-3xl ${(openCart) ? 'text-[#5500FF]': 'text-gray-800'}`}/><span className={`bg-[#EF4056] left-4 top-3 text-white text-xs rounded-full absolute ${(cart.cart.length > 0 ) ? 'p-1' : ""}`}>{(cart.cart.length > 0 ) ? cart.cart.length : ""}</span></ActionIcon>
@@ -60,7 +64,7 @@ function Header() {
             </form>
         </div>
         <div className='w-1/5 py-1 px-6 flex flex-row-reverse items-center justify-evenly gap-5'>
-            <MenuBar/>
+            <MenuBar cookie={myCookie}/>
             <h1>Logo</h1>
         </div>
         <ModalLogOut open={modalLogOut} close={setModalLogOut}/>

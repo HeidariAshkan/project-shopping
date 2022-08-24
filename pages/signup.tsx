@@ -49,7 +49,7 @@ function SignUp() {
     setOpenModal(true)
     }})}
   return (
-    <div dir="rtl" className="flex flex-row-reverse justify-center bg-[#fefefe] h-screen" >
+    <div dir="rtl" className="flex flex-row-reverse justify-center bg-[#fefefe] h-screen font-IR" >
     <Formik
       initialValues={{
         email: '',

@@ -72,7 +72,7 @@ function SelfProduct({ product, allProduct }: IProps) {
   }, [allProduct]);
 
   return (
-    <div className="my-10">
+    <div className="my-10 font-IR">
       <div className="flex">
         <div className="w-2/4 mx-3">
           <img className="rounded-lg" src={product?.main_image} alt="pic" />
@@ -263,7 +263,7 @@ function SelfProduct({ product, allProduct }: IProps) {
                           return alert('Please select options')
                         }
                       }}
-                        className="bg-[#5500FF] text-white hover:bg-opacity-10 hover:text-[#5500FF] transition-all duration-500"
+                        className="bg-[#5500FF] text-white hover:bg-opacity-10 hover:text-[#5500FF] transition-all duration-500 font-IR"
                       >
                         افزودن به سبد
                       </Button>
@@ -289,7 +289,7 @@ function SelfProduct({ product, allProduct }: IProps) {
                     <Link href={`/products/${item.id}`}>
                       <Button
                         variant="filled"
-                        className="bg-[#5500FF] text-white px-6 py-1 hover:text-[#5500FF] hover:bg-[#fefefe] transiton-all duration-500 rounded-md hover:border-[#5500FF] hover:border"
+                        className="bg-[#5500FF] text-white px-6 py-1 hover:text-[#5500FF] hover:bg-[#fefefe] transiton-all duration-500 rounded-md hover:border-[#5500FF] hover:border font-IR"
                       >
                         خرید
                       </Button>

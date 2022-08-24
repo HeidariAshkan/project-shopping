@@ -49,8 +49,8 @@ function id() {
       overlayColor="#b5b5b5" />
         {/* ...other content */}
       </div>
-      <Layout className={`${(visible) ? "hidden" : "block"}`}>
-          <div>
+      <Layout className={`${(visible) ? "hidden" : "block"} font-IR`}>
+          <div className="font-IR">
             <SelfProduct allProduct={allProduct} product={selfProduct?.selfProduct}/>
           </div>
       </Layout>

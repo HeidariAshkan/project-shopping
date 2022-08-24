@@ -9,7 +9,6 @@ import { useSelector , useDispatch } from "react-redux";
 import { getProduct } from './../../../redux/slice/productSlice';
 import { getCategory } from './../../../redux/slice/categorySlice';
 import { Router, useRouter } from "next/router";
-
 import Link from "next/link"
 
 
@@ -236,7 +235,7 @@ function AllProduct() {
             filterProduct?.slice(startRecord,endRecord).map((item:any) => (
             
             <Link key={item.id} href={`/products/${item.id}`}>
-            <div className="border rounded-lg p-2 flex flex-col justify-between hover: hover:shadow-2xl cursor-pointer">
+            <div className="border rounded-lg p-2 flex flex-col justify-between hover:shadow-2xl cursor-pointer">
                 <img className="w-full" src={item.main_image} alt="pic" />
                 <div>
                     <h4 className="w-full truncate">{item.description}</h4>

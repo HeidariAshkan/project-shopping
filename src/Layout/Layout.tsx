@@ -4,7 +4,7 @@ import Footer from '../components/common/Footer/Footer';
 
 interface IProps {
     children: React.ReactNode
-    className: string
+    className?: string
 }
 
 
