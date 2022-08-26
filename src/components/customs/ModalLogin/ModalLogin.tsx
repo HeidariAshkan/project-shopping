@@ -9,6 +9,8 @@ import { AiFillCloseCircle } from "react-icons/ai";
 import Cookies from 'js-cookie'
 import Styles from '../../../../styles/ModalLogin.module.css'
 import { useRouter } from 'next/router'
+import { useDispatch } from 'react-redux';
+import { checkAdmin } from "../../../redux/slice/isAdminSlice";
 
 
 interface IProps {
@@ -24,6 +26,7 @@ function ModalLogin({ open, close }: IProps) {
   const [token , setToken] = useState<string>('')
 
   const router = useRouter()
+  const dispatch = useDispatch()
   const handleClose = () => {
     close(false);
   };
@@ -56,7 +59,11 @@ function ModalLogin({ open, close }: IProps) {
     })
     .then(response => response.json())
     .then(data => {
-    setToken(data.token);
+      console.log(data)
+      if(data.userInfo?.is_superuser){
+        dispatch(checkAdmin(data.userInfo.is_superuser))
+        setToken(data.token);
+      }
     // console.log(data)
     // cookie
     Cookies.set('token', data.token, { expires: 1 , path: '/' , sameSite: 'strict' , secure: true, domain: 'localhost'});

@@ -200,69 +200,11 @@ export default ModalAddProduct
 
 
 
-              {/* <div className="mb-2">
-                <Menu>
-                  <Menu.Target>
-                    <Button className="w-full text-[#5500FF] border border-[#5500FF] border-opacity-25 hover:bg-[#fefefe]">دسته بندی <TbSelect className='text-lg'/></Button>
-                  </Menu.Target>
-                  <Menu.Dropdown>
-                    {category?.map((item:any)=> {
-                      if(item.children === null) {
-                      return (
-                        <Menu.Item key={item.id}>
-                          {item.name}
-                        </Menu.Item>
-                      )}
-                    })}
-                  </Menu.Dropdown>
-                </Menu> 
-              </div> */}
 
 
 
 
 
-              // done
-              // function handleStatusSubmit () {
-              //   fetch(`http://localhost:8000/store/order/${props.order.id}`, {
-              //   method: 'PUT',
-              //   headers: {
-              //   'Content-Type': 'application/json',
-              //   'Authorization': 'Token ' + Cookies.get('token')
-              //   },
-              //   body: JSON.stringify({
-              //   address: props.order.address,
-              //   data: props.order.data,
-              //   status: 'done',
-              //   products: props.order.products,
-              //   })
-              //   }).then(response => response.json())
-              //   .then(data => {
-              //   window.location.reload()
-              //   }
-              //   ).catch(err => console.error(err))
-              //   }
 
 
 
-              // change 
-              // function handleSaveSubmit(){
-              //   fetch(`http://localhost:8000/store/order/${props.order.id}`, {
-              //   method: 'PUT',
-              //   headers: {
-              //   'Content-Type': 'application/json',
-              //   'Authorization': 'Token ' + Cookies.get('token')
-              //   },
-              //   body: JSON.stringify({
-              //   address: copyOrder.address,
-              //   data: copyOrder.data,
-              //   status: copyOrder.status,
-              //   products: copyOrder.products,
-              //   })
-              //   }).then(response => response.json())
-              //   .then(data => {
-              //   console.log(data)
-              //   window.location.reload()
-              //   }
-              //   ).catch(err => console.error(err))
-              //   }

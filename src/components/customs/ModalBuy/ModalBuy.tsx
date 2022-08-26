@@ -27,6 +27,7 @@ interface IProps {
     cart: [];
     status: "idle" | "pending" | "succeeded" | "failed";
   };
+  openSuccess: (open: boolean) => void;
 }
 interface OrderCartState {
   description: string;
@@ -40,7 +41,7 @@ interface OrderCartState {
   options: string | null;
 }
 
-function ModalBuy({ open, close, products }: IProps) {
+function ModalBuy({ open, close, products , openSuccess }: IProps) {
   const [activeName, setActiveName] = useState<boolean>(false);
   const [activePhoneNumber, setActivePhoneNumber] = useState<boolean>(false);
   const [activeAddress, setActiveAddress] = useState<boolean>(false);
@@ -60,6 +61,8 @@ function ModalBuy({ open, close, products }: IProps) {
     address: Yup.string(),
     discount: Yup.string(),
   });
+
+// console.log(products)
 
   useEffect(() => {
     if (products.cart.length === 0) {
@@ -130,8 +133,9 @@ function ModalBuy({ open, close, products }: IProps) {
         data: [
           {
             options: item.options,
-            price: item.price,
-            image: item.image,
+            price: item.final_price,
+            image: item.main_image,
+            name: item.name
           },
         ],
       };
@@ -164,6 +168,7 @@ function ModalBuy({ open, close, products }: IProps) {
           //   setOpenNotif(true)
         } else {
           console.log("something done");
+          openSuccess(true);
           dispatch(removeAllCart());
           handleClose();
         }
@@ -194,7 +199,7 @@ function ModalBuy({ open, close, products }: IProps) {
           console.log("get address", data);
           // setOpenNotif(true)
         } else {
-          handleAddresses(data.id, values.moreInfo);
+          handleAddresses(data.id, values.address);
         }
       })
       .catch((err) => {

@@ -3,6 +3,8 @@ import Link  from 'next/link';
 import { Menu , ActionIcon } from '@mantine/core';
 import { FiMenu } from 'react-icons/fi'
 import { RiSendPlane2Fill } from 'react-icons/ri';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../redux/store/store';
 
 
 // interface IProps {
@@ -13,8 +15,9 @@ import { RiSendPlane2Fill } from 'react-icons/ri';
 // }
 // {open, close , anchorEl = null , setAnchorEl}: IProps
 
-function MenuBar({cookie}:any) {
+function MenuBar() {
 
+    const isAdmin = useSelector((store:RootState) => store.isAdminSlice.isAdmin)
 
   return (
   <Menu width={150} shadow="md">
@@ -29,7 +32,7 @@ function MenuBar({cookie}:any) {
         <Link href="/products">
             <Menu.Item><div className='w-full border-b border-[#5500FF] py-2 px-4 hover:bg-[#5500FF] hover:text-[#fefefe] text-[#5500FF] rounded-lg text-center font-IR'>محصولات</div></Menu.Item>
         </Link>
-        {(cookie) ? <Link href="/manager"><Menu.Item><div className='w-full border-b border-[#5500FF] py-2 px-4 hover:bg-[#5500FF] hover:text-[#fefefe] text-[#5500FF] rounded-lg text-center font-IR'>مدیرت</div></Menu.Item></Link> : ""  }
+        {(isAdmin) ? <Link href="/manager"><Menu.Item><div className='w-full border-b border-[#5500FF] py-2 px-4 hover:bg-[#5500FF] hover:text-[#fefefe] text-[#5500FF] rounded-lg text-center font-IR'>مدیرت</div></Menu.Item></Link> : ""  }
     </Menu.Dropdown>
   </Menu>
   )

@@ -31,7 +31,7 @@ const category = useSelector((state:RootState) => state.categorySlice);
 const product = useSelector((state:RootState) => state.productSlice);
 const [visible, setVisible] = useState<boolean>(false);
 
-console.log(product.product)
+// console.log(product.product)
 
 const autoPlay = useRef(Autoplay({ delay: 3000 }))
 // console.log(product , category)

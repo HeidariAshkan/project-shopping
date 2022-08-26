@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo , useEffect } from "react";
 import { Table, Button, Menu , TextInput} from "@mantine/core";
 import { MdEditNote } from "react-icons/md";
 import { HiSearch } from "react-icons/hi";
@@ -6,22 +6,33 @@ import { RiDeleteBin2Fill } from "react-icons/ri";
 import { CgAddR } from "react-icons/cg";
 import ModalEditProduct from './../ModalEditProduct/ModalEditProduct';
 import ModalDeleteProduct from './../ModalDeleteProduct/ModalDeleteProduct';
-
-interface IProps {
-  products: [];
-  category: [] | undefined;
-  openModal:(open:boolean)=>void
-}
-
-function MangeProducts({ products, category , openModal }: IProps) {
+import { useDispatch, useSelector } from 'react-redux';
+import { getProduct } from './../../../redux/slice/productSlice';
+import { getCategory } from './../../../redux/slice/categorySlice';
+import { RootState } from "../../../redux/store/store";
+import ModalAddProduct from './../ModalAddProduct/ModalAddProduct';
 
 
+function MangeProducts() {
+
+  const products = useSelector((store:RootState) => store.productSlice.product);
+  const category = useSelector((store:RootState) => store.categorySlice.category);
+
+  const [modalAdd , setModalAdd] = useState<boolean>(false);
   const [selected, setSelected] = useState<number | null>(null);
   const [searchInput , setSearchInput] = useState<string>("")
   const [modalEdit , setModalEdit] = useState<boolean>(false)
   const [modalDelete , setModalDelete] = useState<boolean>(false)
   const [edit , setEdit] = useState<any | {}> ({})
   const [deleteID , setDeleteID] = useState<undefined | number | null>(null)
+
+  
+  const dispatch = useDispatch()
+
+  useEffect(()=>{
+    dispatch(getProduct())
+    dispatch(getCategory())
+},[])
 
   const filterCategory = useMemo(() => {
     return category?.filter((item: any) => item.children === null);
@@ -54,7 +65,7 @@ function MangeProducts({ products, category , openModal }: IProps) {
         <TextInput sx={{"& input":{textAlign:"right",}}} icon={<HiSearch size={16} />} placeholder="جستوجو کالا" value={searchInput} onChange={(e)=>{setSearchInput(e.target.value)}} /> 
       </div>
       <div className="flex justify-end py-2 px-6 ml-8">
-        <Button onClick={()=>{openModal(true)}} className="bg-green-500 text-white rounded-lg hover:bg-green-600 text-lg ">
+        <Button onClick={()=>{setModalAdd(true)}} className="bg-green-500 text-white rounded-lg hover:bg-green-600 text-lg ">
           کالا
           <CgAddR className="mr-2" />
         </Button>
@@ -121,6 +132,7 @@ function MangeProducts({ products, category , openModal }: IProps) {
       </Table>
       <ModalEditProduct open={modalEdit} openModal={setModalEdit} category={category} editProduct={edit}/>
       <ModalDeleteProduct open={modalDelete} openModal={setModalDelete} id={deleteID}/>
+      <ModalAddProduct open={modalAdd} openModal={setModalAdd} category={category}/>
     </>
   );
 }

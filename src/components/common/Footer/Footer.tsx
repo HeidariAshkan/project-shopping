@@ -12,7 +12,7 @@ function Footer() {
         <div className='flex flex-col items-center gap-5'>
             <h1 className='text-2xl font-semibold'>همین حالا عضو ما بشو!</h1>
             <Link href="/signup">
-                <Button variant="filled" className='text-xl bg-[#5500FF] text-[#fefefe] w-[9.875rem] h-[3.4481rem] rounded-md hover:bg-[#fefefe] hover:text-[#5500FF] transition-all duration-500'>شروع کن</Button>
+                <Button variant="filled" className='text-xl bg-[#5500FF] text-[#fefefe] w-[9.875rem] h-[3.4481rem] rounded-md hover:bg-[#fefefe] hover:text-[#5500FF] transition-all duration-500 font-IR'>شروع کن</Button>
             </Link>
         </div>
         <hr className='my-10 rotate-3 bg-[#5500ff75] h-[2px] sol' />

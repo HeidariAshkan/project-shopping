@@ -4,6 +4,9 @@ import categorySlice from "./../slice/categorySlice";
 import productSlice from "./../slice/productSlice"
 import selfProductSlice from "./../slice/selfProductSlice"
 import orderCartSlice from './../slice/orderCartSlice'
+import isAdminSlice from './../slice/isAdminSlice'
+
+
 
 
 export const store = configureStore({
@@ -12,6 +15,7 @@ export const store = configureStore({
         productSlice,
         selfProductSlice,
         orderCartSlice,
+        isAdminSlice,
     },
 })
 

@@ -36,7 +36,7 @@ function SummaryOfProduct({ category , product }:IProps) {
         else{
             return product.product.filter((item:any)=> item.category === 5 || item.category === 6 || item.category === 7)
         }
-    },[category]);
+    },[category , product]);
       
 
 

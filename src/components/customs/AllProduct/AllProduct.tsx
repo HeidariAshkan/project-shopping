@@ -230,12 +230,12 @@ function AllProduct() {
             <a className="cursor-pointer text-sm hover:text-[#5500FF]">پیشنهاد خریداران</a>
           </div>
         </div>
-        <div className="grid grid-cols-3 gap-4">
+        <div className="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-4">
           {
             filterProduct?.slice(startRecord,endRecord).map((item:any) => (
             
             <Link key={item.id} href={`/products/${item.id}`}>
-            <div className="border rounded-lg p-2 flex flex-col justify-between hover:shadow-2xl cursor-pointer">
+            <div className="border rounded-lg p-2 flex flex-col justify-between hover:shadow-2xl cursor-pointer w-full">
                 <img className="w-full" src={item.main_image} alt="pic" />
                 <div>
                     <h4 className="w-full truncate">{item.description}</h4>
@@ -249,9 +249,6 @@ function AllProduct() {
                                 {parseInt(item.final_price).toLocaleString("fa-IR")} تومان
                             </p>
                             {(item.featured) ? <p className="text-xs text-gray-500 mx-auto line-through">{parseInt(item.price).toLocaleString("fa-IR")}</p> : ""}
-                        </div>
-                        <div className="flex items-center">
-                            <Button size="md" variant="filled" className="text-[#5500FF] border-[#5500FF] hover:border-[#5500FF] hover:bg-[#5500FF] hover:bg-opacity-10"><GrAdd/></Button >
                         </div>
                         <div className="flex flex-col gap-4 justify-center">
                           {(item.remaining > 5) ? <p className="text-green-600">موجود در انبار</p> : (item.remaining > 0) ? <p className="text-red-600 text-xs w-20">فقط {item.remaining} عدد موجود است</p> : <p className="text-gray-400">ناموجود</p> }

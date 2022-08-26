@@ -16,7 +16,7 @@ function ModalLogOut({ open, close }: IProps) {
 
   return (
     <Modal size="md" opened={open} onClose={handleClose}>
-        <div className='flex flex-col justify-center text-center gap-3'>
+        <div className='flex flex-col justify-center text-center gap-3 font-IR'>
             <h1>مطمئنی میخوای بری ؟</h1>
             <Button onClick={()=>{Cookies.remove('token');location.reload()}} variant='filled' className='text-white bg-red-500 hover:bg-red-600'>
                 خروج

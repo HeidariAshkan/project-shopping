@@ -7,23 +7,23 @@ import { useSelector , useDispatch } from 'react-redux';
 import { getProduct } from './../../src/redux/slice/productSlice';
 import { getCategory } from './../../src/redux/slice/categorySlice';
 import { RootState } from '../../src/redux/store/store';
-import ModalAddProduct from '../../src/components/customs/ModalAddProduct/ModalAddProduct';
+import ManageOrder from './../../src/components/customs/ManageOrder/ManageOrder';
+
 
 function index() {
-    const products = useSelector((store:RootState) => store.productSlice);
-    const categorys = useSelector((store:RootState) => store.categorySlice);
-    const [modalAdd , setModalAdd] = useState<boolean>(false);
- 
+
+
+
     const [IsProduct , setIsProduct] = useState<boolean>(true)
 
-    const dispatch = useDispatch()
 
-    useEffect(()=>{
-        dispatch(getProduct())
-        dispatch(getCategory())
-    },[])
 
-    // console.log(products)
+    // useEffect(()=>{
+    //     dispatch(getProduct())
+    //     dispatch(getCategory())
+    // },[])
+
+
 
   return (
     <div dir='rtl' className='relarive font-IR'>
@@ -45,14 +45,13 @@ function index() {
                     پنل  مدیریت فروشگاه
                 </h1>
                 <div className='border rounded-lg border-[#5500FF]'>
-                    <Button onClick={()=>{setIsProduct(true)}} className="font-IR" variant="subtle" size='md' radius="md">کالاها</Button>
-                    <Button onClick={()=>{setIsProduct(false)}} className="font-IR" variant="subtle" size='md' radius="md">سفارش ها</Button>
+                    <Button onClick={()=>{setIsProduct(true)}} className={`font-IR ${(IsProduct) ? "bg-blue-100" : ""}`} variant="subtle" size='md' radius="md">کالاها</Button>
+                    <Button onClick={()=>{setIsProduct(false)}} className={`font-IR ${(IsProduct) ? "" : "bg-blue-100"}`} variant="subtle" size='md' radius="md">سفارش ها</Button>
                 </div>
             </div>
-            {(IsProduct) ? <MangeProducts products={products?.product} category={categorys?.category} openModal={setModalAdd} /> : ""}
+            {(IsProduct) ? <MangeProducts  /> : <ManageOrder/>}
             
         </div>
-        <ModalAddProduct open={modalAdd} openModal={setModalAdd} category={categorys?.category}/>
         
     </Layout>
 </div>
@@ -60,3 +59,21 @@ function index() {
 }
 
 export default index
+
+
+// export async function getServerSideProps() {
+//   const cookie = "Token"+ " " + Cookies.get('token')
+//   const res = await fetch('http://localhost:8000/store/order' , {
+//     method: 'GET',
+//     headers: {
+//       'Authorization':cookie
+//      },
+//   })
+//   const orderList = await res.json()
+
+//   return {
+//     props: {
+//       orderList
+//     }, // will be passed to the page component as props
+//   }
+// }

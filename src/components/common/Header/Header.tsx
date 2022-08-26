@@ -2,7 +2,7 @@ import React, { useState , useEffect } from 'react'
 import { MdShoppingCart } from 'react-icons/md'
 import { FaUserCircle } from 'react-icons/fa'
 import { GoSearch } from 'react-icons/go'
-import { ActionIcon, Button } from '@mantine/core'
+import { ActionIcon, Button, Modal } from '@mantine/core'
 import MenuBar from '../../customs/MenuBar/MenuBar';
 import ModalLogin from '../../customs/ModalLogin/ModalLogin';
 import SearchProduct from './../../customs/SearchProduct/SearchProduct';
@@ -12,6 +12,7 @@ import { TbLogout } from 'react-icons/tb';
 import Cookies from 'js-cookie'
 import ModalLogOut from '../../customs/ModalLogOut/ModalLogOut'
 import ModalBuy from './../../customs/ModalBuy/ModalBuy';
+import ModalSuccessPay from './../../customs/ModalSuccessPay/ModalSuccessPay';
 
 
 
@@ -26,6 +27,7 @@ function Header() {
     const [modalLogOut , setModalLogOut] = useState<boolean>(false)
     const [modalBuy , setModalBuy] = useState<boolean>(false)
     const[myCookie , setMyCookie] = useState<string | null | undefined>(undefined)
+    const [modalSuccess , setModalSuccess] = useState<boolean>(false)
 
     useEffect(()=>{
         if(input !== ""){
@@ -64,12 +66,13 @@ function Header() {
             </form>
         </div>
         <div className='w-1/5 py-1 px-6 flex flex-row-reverse items-center justify-evenly gap-5'>
-            <MenuBar cookie={myCookie}/>
+            <MenuBar/>
             <h1>Logo</h1>
         </div>
         <ModalLogOut open={modalLogOut} close={setModalLogOut}/>
         <ModalLogin open={openModal} close={setOpenModal}/>
-        <ModalBuy open={modalBuy} close={setModalBuy} products={cart} />
+        <ModalBuy open={modalBuy} close={setModalBuy} products={cart} openSuccess={setModalSuccess} />
+        <ModalSuccessPay openSuccess={setModalSuccess} open={modalSuccess}/>
     </div>
   )
 }

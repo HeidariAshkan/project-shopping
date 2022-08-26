@@ -29,6 +29,9 @@ function ModalDeleteProduct({ open , openModal , id }: IProps) {
             openModal(false)
         }).catch(err => console.error(err))
     }
+
+
+    // console.log(Cookies.get('token'))
   return (
     <>
         <Modal opened={open} onClose={()=>{openModal(false)}} className='font-IR' >
