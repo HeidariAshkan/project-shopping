@@ -194,7 +194,7 @@ function AllProduct() {
                     همه
                   </Menu.Item>
                   {filterCategory?.map((item:any)=>(
-                    <Menu.Item onClick={()=>{handleAddFilterCategory(item.id)}} className="text-center" key={item.id}>
+                    <Menu.Item onClick={()=>{handleAddFilterCategory(item.id)}} className="text-center font-IR" key={item.id}>
                       {item.name}
                     </Menu.Item>
                   ))}
@@ -208,11 +208,11 @@ function AllProduct() {
                   <Menu.Item><RangeSlider min={90000} max={180000000}  size="xs" value={rangeFilter} defaultValue={[90000 , 180000000]} onChange={handleAddFilterRange}/></Menu.Item>
                 </Menu.Dropdown>
             </Menu>
-            <div dir="ltr">
-              <Switch checked={exsitProduct} onChange={handleAddFilterExist} label="کالا های موجود در انبار"/>
+            <div dir="ltr" className="">
+              <Switch checked={exsitProduct} onChange={handleAddFilterExist} label="کالا های موجود در انبار" sx={{textAlign:'center', '& label':{fontFamily:'IRANSans'}}}/>
             </div>
             <div dir="ltr">
-              <Switch checked={discountProduct} onChange={handleAddFilterDiscount} label="کالا های تخفیف دار"/>
+              <Switch checked={discountProduct} onChange={handleAddFilterDiscount} label="کالا های تخفیف دار" sx={{textAlign:'center', '& label':{fontFamily:'IRANSans' ,}}}/>
             </div>
          </div>
       </div>
@@ -261,7 +261,7 @@ function AllProduct() {
             ))
           }
         </div>
-        <div dir="ltr" className="flex justify-center">
+        <div dir="ltr" className="flex justify-center mt-10 ml-48">
           <Pagination total={totalPage} page={page} onChange={setPage}/>
         </div> 
       </div>

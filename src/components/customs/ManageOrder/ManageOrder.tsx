@@ -14,6 +14,7 @@ function ManageOrder() {
   const [orderList , setOrderList] = useState<any>([])
   const [usersList , setUsersList] = useState<any>([])
   const [editOrder , setEditOrder] = useState<any>({})
+  const [selectOrder , setSelectOrder] = useState<any>([])
 
   const [openModal , setOpenModal] = useState<boolean>(false)
   const [searchInput , setSearchInput] = useState<string>("")
@@ -27,16 +28,14 @@ function ManageOrder() {
 
 
   useEffect(()=>{
-    if(searchInput === ""){
-      getOrder()
-      getUsers()
+    if(searchInput === "" || null || undefined ){
+      setSelectOrder(orderList)
     }
     else{
-      const user = usersList.find((item:any)=>item.username.includes(searchInput))
-      // console.log(user)
-      setOrderList(orderList.filter((item:any)=>item.user === user.id))
+      const users:any = usersList.filter((item:any)=>item?.username.includes(searchInput))
+      setSelectOrder(orderList.filter((item:any)=>users.some(user => user.id === item.user)))      
     }
-  },[searchInput])
+  },[searchInput , orderList , usersList])
 
 
 
@@ -202,12 +201,12 @@ function ManageOrder() {
           </thead>
           <tbody className="font-IR">
             {
-              orderList.map((item:any)=>(
+              selectOrder?.map((item:any)=>(
                 <tr key={item.id} onClick={(e:any)=>{handleEditOrder(e , item.id);}}>
-                  <td className="text-right text-md">{usersList.find((items:any)=>items.id === item.user)?.username}</td>
-                  <td className="text-right text-md">{item.total.toLocaleString('fa-IR')}</td>
-                  <td className="text-center text-md">{item.created}</td>
-                  <td className={`text-center text-md p ${(item.status === 'pending') ? 'text-yellow-500': 'text-green-500'}`}>{(item.status === 'pending') ? 'در حال انتظار' : 'تحویل داده شد'}</td>
+                  <td className="text-right text-md">{usersList.find((items:any)=>items.id === item?.user)?.username}</td>
+                  <td className="text-right text-md">{item?.total?.toLocaleString('fa-IR')}</td>
+                  <td className="text-center text-md">{item?.created}</td>
+                  <td className={`text-center text-md p ${(item?.status === 'pending') ? 'text-yellow-500': 'text-green-500'}`}>{(item?.status === 'pending') ? 'در حال انتظار' : 'تحویل داده شد'}</td>
                 </tr>
               ))
             }
